@@ -1,7 +1,8 @@
 /* ------ GENERAL ------ */
-body {
+body, html {
   margin: 0;
   padding: 0;
+  height: 100vh;
   background: url("../imgs/gibraltarhq-mobile.png");
   background-size: cover;
   background-repeat: no-repeat;
@@ -95,6 +96,106 @@ h2 {
   background: rgb(254, 151, 77);
   box-shadow: 2px 2px rgb(74, 58, 58);
   color: rgb(60, 119, 125);
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
+}
+/* --- HERO SELECT SCREEN --- */
+.hero-select {
+  display: none;
+  height: calc(100% - 130px);
+  overflow: auto;
+}
+.hero-select h3 {
+  color: rgba(254, 151, 77, 0.8);
+  text-shadow: 0.5px 0.5px rgb(84, 68, 68);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 25px;
+  margin: 20px;
+  padding: 2px;
+}
+.hero-row {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.hero-image {
+  width: 47%;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 4px 4px rgb(60, 119, 125);
+  border-radius: 10px;
+  transform: skewX(-5deg);
+  overflow: hidden;
+}
+.hero-image img {
+  width: 100%;
+  position: relative;
+  left: 10%;
+}
+.hero-info {
+  width: 47%;
+  height: 100px;
+  padding: 15px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 2px 2px rgb(84, 68, 68);
+  border-radius: 5px;
+  transform: skewX(-5deg);
+  overflow: auto;
+}
+.hero-submit {
+  width: 40%;
+  margin: 20px 28%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.hero-select form {
+  width: 70%;
+}
+.hero-select input {
+  width: 100%;
+  height: 50px;
+  border: 0px transparent;
+  border-radius: 10px;
+  transform: skewX(-5deg);
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 2px 2px rgba(254, 151, 77, 0.8);
+  overflow: auto;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 2vw;
+  box-sizing: border-box;
+}
+.hero-select ::-webkit-input-placeholder {
+  color: #444;
+  opacity: 0.8;
+}
+.hero-select button {
+  width: 25%;
+  border: 0px transparent;
+  border-radius: 10px;
+  transform: skewX(-5deg);
+  background: rgb(60, 119, 125);
+  box-shadow: 2px 2px rgba(254, 151, 77, 0.5);
+  color: rgba(255,255,255,0.8);
+  font-size: 2vw;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
+}
+.hero-select button:hover {
+  background: rgba(254, 151, 77, 0.9);
+  box-shadow: 2px 2px rgb(60, 119, 125);
+  color: rgba(255,255,255,0.8);
   transition: .3s linear;
   -moz-transition: .3s linear;
   -webkit-transition: .3s linear;

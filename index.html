@@ -16,10 +16,12 @@
     <script src="js/app.js" type="text/javascript"></script>
   </head>
   <body>
+    <!-- HEADER -->
     <header>
       <h1>OVERWATCH INITIATIVE</h1>
       <h2>THE WORLD COULD ALWAYS USE MORE HEROES</h2>
     </header>
+    <!-- POSITION SELECT SCREEN -->
     <section class="position-select">
       <div class="blurb">
         <h3>WELCOME, HERO</h3>
@@ -30,6 +32,66 @@
       <div class="position-buttons">
         <button id="#attack" class="position">ATTACK</button> <button id="#defense" class="position">DEFEND</button>
       </div>
+    </section>
+    <!-- HERO SELECT SCREEN -->
+    <section class="hero-select">
+      <h3>&mdash; ATTACKERS</h3>
+      <section class="hero-row">
+        <div class="hero-image">
+          <img src="imgs/soldier76.png"/>
+        </div>
+        <div class="hero-image">
+          <img src="imgs/tracer.png"/>
+        </div>
+      </section>
+      <section class="hero-row">
+        <div class="hero-info">
+          testing
+        </div>
+        <div class="hero-info">
+          testing
+        </div>
+      </section>
+      <h3>&mdash; DEFENDERS</h3>
+      <section class="hero-row">
+        <div class="hero-image">
+          <img src="imgs/bastion.png" style="left:-5%"/>
+        </div>
+        <div class="hero-image">
+          <img src="imgs/mei.png"/>
+        </div>
+      </section>
+      <section class="hero-row">
+        <div class="hero-info">
+          testing
+        </div>
+        <div class="hero-info">
+          testing
+        </div>
+      </section>
+      <h3>&mdash; TANKS</h3>
+      <section class="hero-row">
+        <div class="hero-image">
+          <img src="imgs/reinhardt.png" style="left:-5%"/>
+        </div>
+        <div class="hero-image">
+          <img src="imgs/dva.png" style="left: 3%"/>
+        </div>
+      </section>
+      <section class="hero-row">
+        <div class="hero-info">
+          testing
+        </div>
+        <div class="hero-info">
+          testing
+        </div>
+      </section>
+      <section class="hero-submit">
+        <form id="user-hero-select">
+          <input type="text" placeholder="Enter your hero" />
+        </form>
+        <button id="user-hero-select-submit" type="submit">FIGHT!</button>
+      </section>
     </section>
   </body>
 </html>
