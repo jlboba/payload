@@ -38,3 +38,32 @@
     // payload distance check
       // if payload distance = end distance, attacker wins, pass to respective end screen (loss if attacker was computer, win if attacker was player)
       // if payload distance < end distance, pass back to main game prompt
+
+  // OBJECTS NEEDED
+    // player object && computer object
+      // variables: hero, position (attack or defense), health, attack stat, defense stat, current damage, ultimate status (stretch goal)
+      // methods: attack method, defense method
+
+    // game object
+      // methods: attack/defense loop, health check, payload check
+
+    // hero object (? unsure if this should be put into another object)
+      // keys would be all the heroes, values would be an object of their stats and abilities
+        // e.g. 'soldier 76': { 'accuracy': 0.7, 'defense': 0.3, 'attackName': 'heavy pulse rifle', 'defenseName': 'biotic field'}
+
+    // dom object:
+      // still unsure
+
+  // STRETCH GOALS
+    // 1. Ultimate abilities
+      // whenever the player succesfully attacks, increase their ultimate meter +1
+      // once they hit a certain ultimate threshold, give them the option to use their ultimate
+      // ultimate abilities depend on their hero
+        // e.g. soldier 76's ultimate (tactical visor) is an attack that is 100% accurate and cannot be defended against, dealing a set amount of large damage
+        // e.g. mei's ultimate (blizzard) is a defense move that blocks 100% of damage
+
+    // 2. Map select
+      // after choosing their position and their hero, give the player the ability to choose the map to play on
+      // doesn't add any extra functionality to the game, simply changes the background of the main game screen
+      // maps to offer: el dorado, watchpoint: gibraltar, route 66 (and if it's simple enough to implement, add the hybrid maps -- numbani, hollywood, king's row, eichenwalde)
+        // default map i'll be using if i don't give them this ability: watchpoint: gibraltar
