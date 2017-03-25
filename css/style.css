@@ -1,4 +1,98 @@
 /* ------ GENERAL ------ */
 body {
-  background: #eee;
+  margin: 0;
+  padding: 0;
+  background: url("../imgs/gibraltarhq-mobile.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  font-family: 'Roboto', helvetica, sans-serif;
+  color: #333;
+}
+
+/* ------ RESPONSIVE STYLING ( 0 - 700px width ) ------ */
+/* --- GENERAL --- */
+header {
+  width: 100%;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 13px;
+}
+h1 {
+  font-family: 'Roboto Condensed';
+  font-size: 8vw;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  color: rgb(60, 119, 125);
+  text-shadow: 1px 1px rgb(84, 68, 68);
+  margin: 0;
+  padding-top: 10px;
+}
+h2 {
+  font-family: 'Roboto Condensed';
+  font-size: 4vw;
+  font-style: italic;
+  text-align: center;
+  color: rgb(84, 68, 68);
+  margin: 0;
+  padding: 0;
+}
+/* --- OPENING SCREEN --- */
+.position-select .blurb {
+    width: 85%;
+    padding: 20px;
+    margin: 10% auto 5% auto;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    transform: skewX(-1.5deg);
+}
+.position-select h3 {
+  color: rgb(60, 119, 125);
+  text-shadow: 0.5px 0.5px rgb(84, 68, 68);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+  margin: 0;
+  padding: 2px;
+}
+.position-select blockquote {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgb(74, 58, 58);
+}
+.position-buttons {
+  width: 85%;
+  margin: 0 auto;
+  text-align: center;
+}
+.position-select button {
+  width: 47%;
+  padding: 15px;
+  margin: 5px;
+  border: 0px;
+  border-radius: 5px;
+  transform: skewX(-3deg);
+  font-size: 3vw;
+  font-weight: 700;
+  background: rgb(60, 119, 125);
+  box-shadow: 2px 2px rgb(74, 58, 58);
+  color: rgba(254, 151, 77, 0.6);
+  transition: .5s linear;
+  -moz-transition: .5s linear;
+  -webkit-transition: .5s linear;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.position-select button:hover {
+  background: rgb(254, 151, 77);
+  box-shadow: 2px 2px rgb(74, 58, 58);
+  color: rgb(60, 119, 125);
+  transition: .5s linear;
+  -moz-transition: .5s linear;
+  -webkit-transition: .5s linear;
 }
