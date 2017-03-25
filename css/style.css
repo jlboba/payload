@@ -42,6 +42,9 @@ h2 {
   padding: 0;
 }
 /* --- OPENING SCREEN --- */
+.position-select {
+  display: show;
+}
 .position-select .blurb {
     width: 85%;
     padding: 20px;
@@ -81,9 +84,9 @@ h2 {
   background: rgb(60, 119, 125);
   box-shadow: 2px 2px rgb(74, 58, 58);
   color: rgba(254, 151, 77, 0.6);
-  transition: .5s linear;
-  -moz-transition: .5s linear;
-  -webkit-transition: .5s linear;
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
   cursor: pointer;
   box-sizing: border-box;
 }
@@ -92,7 +95,7 @@ h2 {
   background: rgb(254, 151, 77);
   box-shadow: 2px 2px rgb(74, 58, 58);
   color: rgb(60, 119, 125);
-  transition: .5s linear;
-  -moz-transition: .5s linear;
-  -webkit-transition: .5s linear;
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
 }
