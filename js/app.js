@@ -2,6 +2,7 @@ $(function() { // start window onload
 
   // EVENT LISTENERS
   $('.position').on('click', gameInitialization.selectPosition);
+  $('#user-hero-select-submit').on('click', gameInitialization.checkHeroSelect);
 
 }) // end window onload
 
@@ -9,7 +10,8 @@ $(function() { // start window onload
 
 // game variables object, holds general variables that aren't always specific to a certain player
 var gameVariables = {
-  'payload': 0
+  'payload': 0,
+  'heroPool': ['solider 76', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va']
 }
 
 // game initialization object, holds all the beginning steps to determine position and hero
@@ -25,6 +27,30 @@ var gameInitialization = {
         computer.position = 'attack';
         player.position = 'defense';
         dom.hidePositionSelect();
+    }
+  },
+  // checks that the user input a valid hero
+  checkHeroSelect: function() {
+    var heroCheck = 0; // counter variable to increment below
+    var $userHero = $('#user-hero-select').val(); // saves the variable the user input
+    for (var i = 0; i < gameVariables.heroPool.length; i++) { // iterates through hero pool
+      if($userHero.toLowerCase() === gameVariables.heroPool[i]) { // if the hero the user input is found in the array
+        heroCheck++; // increment the counter
+      }
+    } // end for loop
+    if (heroCheck === 0) { // if the counter remains at 0, user input must be invalid
+      dom.changeh2('THAT HERO\'S ON VACATION, TRY AGAIN!') // changes prompt to let them know
+    } else { // if the counter is at 1, user input must be valid
+      gameInitialization.selectHero($userHero); // passes to select hero method
+    }
+  },
+  // sets the player's hero and takes that hero out of the available hero pool
+  selectHero: function($userHero) {
+    player.hero = $userHero; // sets the user's input as their hero
+    for (var i = 0; i < gameVariables.heroPool.length; i++) { // iterates through hero pool array
+      if($userHero === gameVariables.heroPool[i]) {
+        gameVariables.heroPool.splice([i], 1); // splices out the hero when found
+      }
     }
   }
 }

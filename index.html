@@ -21,7 +21,7 @@
       <h1>OVERWATCH INITIATIVE</h1>
       <h2>THE WORLD COULD ALWAYS USE MORE HEROES</h2>
     </header>
-    <!-- POSITION SELECT SCREEN -->
+    <!-- START POSITION SELECT SCREEN -->
     <section class="position-select">
       <div class="blurb">
         <h3>WELCOME, HERO</h3>
@@ -33,21 +33,24 @@
         <button id="#attack" class="position">ATTACK</button> <button id="#defense" class="position">DEFEND</button>
       </div>
     </section>
-    <!-- HERO SELECT SCREEN -->
+    <!-- END POSITION SELECT SCREEN -->
+    <!-- START HERO SELECT SCREEN -->
     <section class="hero-select">
       <h3>&mdash; ATTACKERS</h3>
       <section class="hero-row">
         <div class="hero-image">
-          <img src="imgs/soldier76.png"/>
+          <img src="imgs/heroes/soldier76.png"/>
         </div>
         <div class="hero-image">
-          <img src="imgs/tracer.png"/>
+          <img src="imgs/heroes/tracer.png"/>
         </div>
       </section>
       <section class="hero-row">
+        <!-- solier 76 info -->
         <div class="hero-info">
           testing
         </div>
+        <!-- tracer info -->
         <div class="hero-info">
           testing
         </div>
@@ -55,16 +58,18 @@
       <h3>&mdash; DEFENDERS</h3>
       <section class="hero-row">
         <div class="hero-image">
-          <img src="imgs/bastion.png" style="left:-5%"/>
+          <img src="imgs/heroes/bastion.png" style="left:-5%"/>
         </div>
         <div class="hero-image">
-          <img src="imgs/mei.png"/>
+          <img src="imgs/heroes/mei.png"/>
         </div>
       </section>
       <section class="hero-row">
+        <!-- bastion info -->
         <div class="hero-info">
           testing
         </div>
+        <!-- mei info -->
         <div class="hero-info">
           testing
         </div>
@@ -72,26 +77,29 @@
       <h3>&mdash; TANKS</h3>
       <section class="hero-row">
         <div class="hero-image">
-          <img src="imgs/reinhardt.png" style="left:-5%"/>
+          <img src="imgs/heroes/reinhardt.png" style="left:-5%"/>
         </div>
         <div class="hero-image">
-          <img src="imgs/dva.png" style="left: 3%"/>
+          <img src="imgs/heroes/dva.png" style="left: 3%"/>
         </div>
       </section>
       <section class="hero-row">
+        <!-- reinhardt info -->
         <div class="hero-info">
           testing
         </div>
+        <!-- dva info -->
         <div class="hero-info">
           testing
         </div>
       </section>
       <section class="hero-submit">
-        <form id="user-hero-select">
-          <input type="text" placeholder="Enter your hero" />
+        <form id="hero-select-form">
+          <input type="text" placeholder="Enter your hero" id="user-hero-select"/>
         </form>
         <button id="user-hero-select-submit" type="submit">FIGHT!</button>
       </section>
     </section>
+    <!-- END HERO SELECT SCREEN -->
   </body>
 </html>
