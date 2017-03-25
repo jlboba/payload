@@ -11,7 +11,7 @@ $(function() { // start window onload
 // game variables object, holds general variables that aren't always specific to a certain player
 var gameVariables = {
   'payload': 0,
-  'heroPool': ['solider 76', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va']
+  'heroPool': ['genji', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va']
 }
 
 // game initialization object, holds all the beginning steps to determine position and hero
@@ -50,8 +50,14 @@ var gameInitialization = {
     for (var i = 0; i < gameVariables.heroPool.length; i++) { // iterates through hero pool array
       if($userHero === gameVariables.heroPool[i]) {
         gameVariables.heroPool.splice([i], 1); // splices out the hero when found
+        this.computerHeroSelect();
       }
     }
+  },
+  // randomly decides a hero for the computer
+  computerHeroSelect: function() {
+    var randomNum = Math.floor(Math.random() * (gameVariables.heroPool.length - 1));
+    computer.hero = gameVariables.heroPool[randomNum];
   }
 }
 
@@ -87,10 +93,10 @@ var dom = {
   // method that hides the position select screen
   hidePositionSelect: function() {
     $('.position-select').hide();
-    this.generateHeroSelect();
+    this.showHeroSelect();
   },
-  // method that shows/generates the hero select screen
-  generateHeroSelect: function() {
+  // method that shows the hero select screen
+  showHeroSelect: function() {
     // changes header text
     this.changeh1('CHOOSE YOUR HERO');
     this.changeh2('TO BEGIN YOUR WATCH');
