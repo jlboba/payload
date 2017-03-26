@@ -8,10 +8,34 @@ $(function() { // start window onload
 
 // OBJECTS
 
-// game variables object, holds general variables that aren't always specific to a certain player
+// game variables object, holds general variables that aren't always specific to a certain player, most importantly the hero pool and their stats
 var gameVariables = {
   'payload': 0,
-  'heroPool': ['genji', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va']
+  'heroPool': ['genji', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va'],
+  'genji': {
+    'accuracy': 0.7,
+    'defense': 0.3
+  },
+  'tracer': {
+    'accuracy': 0.7,
+    'defense': 0.3
+  },
+  'bastion': {
+    'accuracy': 0.5,
+    'defense': 0.5,
+  },
+  'mei': {
+    'accuracy': 0.5,
+    'defense': 0.5
+  },
+  'reinhardt': {
+    'accuracy': 0.3,
+    'defense': 0.7
+  },
+  'd.va': {
+    'accuracy': 0.3,
+    'defense': 0.7
+  }
 }
 
 // game initialization object, holds all the beginning steps to determine position and hero
@@ -47,6 +71,8 @@ var gameInitialization = {
   // sets the player's hero and takes that hero out of the available hero pool
   selectHero: function($userHero) {
     player.hero = $userHero; // sets the user's input as their hero
+    player.accuracy = gameVariables[$userHero].accuracy; // sets the user's accuracy as their chosen hero's accuracy, found from the gameVariables object
+    player.defense = gameVariables[$userHero].defense; // sets the user's accuracy as their chosen hero's defense
     for (var i = 0; i < gameVariables.heroPool.length; i++) { // iterates through hero pool array
       if($userHero === gameVariables.heroPool[i]) {
         gameVariables.heroPool.splice([i], 1); // splices out the hero when found
@@ -56,8 +82,12 @@ var gameInitialization = {
   },
   // randomly decides a hero for the computer
   computerHeroSelect: function() {
-    var randomNum = Math.floor(Math.random() * (gameVariables.heroPool.length - 1));
-    computer.hero = gameVariables.heroPool[randomNum];
+    var randomNum = Math.floor(Math.random() * (gameVariables.heroPool.length - 1)); // randomly generates a valid index number from the hero pool
+    var computerHero = gameVariables.heroPool[randomNum];
+    computer.hero = computerHero; // sets the computer's hero to the randomly selected hero
+    computer.accuracy = gameVariables[computerHero].accuracy;
+    computer.defense = gameVariables[computerHero].defense;
+
   }
 }
 
@@ -65,7 +95,7 @@ var gameInitialization = {
 var player = {
   'position': '',
   'hero': '',
-  'health': 0,
+  'health': 100,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0
@@ -75,7 +105,7 @@ var player = {
 var computer = {
   'position': '',
   'hero': '',
-  'health': 0,
+  'health': 100,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0
