@@ -108,31 +108,33 @@
       <img src="imgs/payload.png" id="payload"/>
       <img src="imgs/endflag.png" id="payload-threshold"/>
       <!-- heroes -->
-      <img src="imgs/heroes/genjicute.png" id="genji" class="defender"/>
-      <img src="imgs/heroes/pharahcute.png" id="pharah"/>
-      <img src="imgs/heroes/bastioncute.png" id="bastion"/>
-      <img src="imgs/heroes/meicute.png" id="mei"/>
-      <img src="imgs/heroes/winstoncute.png" id="winston">
-      <img src="imgs/heroes/dvacute.png" id="dva" class="attacker"/>
+      <img src="imgs/heroes/genjicute.png" id="genji" class="hide"/>
+      <img src="imgs/heroes/pharahcute.png" id="pharah" class="hide"/>
+      <img src="imgs/heroes/bastioncute.png" id="bastion" class="hide"/>
+      <img src="imgs/heroes/meicute.png" id="mei" class="hide"/>
+      <img src="imgs/heroes/winstoncute.png" id="winston" class="hide"/>
+      <img src="imgs/heroes/dvacute.png" id="dva" class="hide"/>
       <!-- hero info -->
       <div class="players" id="attack">
-        <h3 id="attack-player">player</h3> <span class="pos">&nbsp;&mdash; ATTACKER</span> <br/>
-        <strong>HERO:</strong> D.VA // <strong>ACC:</strong> 0.3 // <strong>DEF:</strong> 0.7
+        <h3 id="attack-player"></h3> <span class="pos">&nbsp;&mdash; ATTACKER</span> <br/>
+        <span id="attack-hero-stats">
+        </span>
       </div>
       <div class="players" id="defend">
-        <h3 id="defense-player">computer</h3> <span class="pos">&nbsp;&mdash; DEFENDER</span> <br/>
-        <strong>HERO:</strong> BASTION // <strong>ACC:</strong> 0.7 // <strong>DEF:</strong> 0.3
+        <h3 id="defense-player"></h3> <span class="pos">&nbsp;&mdash; DEFENDER</span> <br/>
+        <span id="defense-hero-stats">
+        </span>
       </div>
       <!-- hero options -->
       <div class="attacker-options">
-        <button>ATTACK: FUSION CANNONS</button>
-        <button>DEFEND: DEFENSE MATRIX</button>
-        <button>ULTIMATE: SELF-DESTRUCT</button>
+        <button id="attacker-attack"></button>
+        <button id="attacker-defense"></button>
+        <button id="attacker-ultimate" class="ult"></button>
       </div>
       <div class="defender-options">
-        <button>ATTACK: SHURIKENS</button>
-        <button>DEFEND: DEFLECT</button>
-        <button>ULTIMATE: DRAGON BLADE</button>
+        <button id="defender-attack"></button>
+        <button id="defender-defense"></button>
+        <button id="defender-ultimate" class="ult"></button>
       </div>
     </section>
     <!-- END MAIN GAME SCREEN -->
