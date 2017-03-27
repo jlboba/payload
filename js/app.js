@@ -48,13 +48,14 @@ var player = {
   'ultimate': 0,
   'currentMove': '',
   'damageDealt': 0,
+  // player attack handler that occurs if the player clicks their hero's attack ability
   attack: function() {
-    player.currentMove = 'attack';
-    var randomNum = Math.round((Math.random() * 10)) / 10;
-    if (randomNum <= player.accuracy) {
-      switch(randomNum) {
-        case 0:
-          player.damageDealt = 1;
+    player.currentMove = 'attack'; // changes current move to attack
+    var randomNum = Math.round((Math.random() * 10)) / 10; // randomizes a number between 0 and 1
+    if (randomNum <= player.accuracy) { // if the random number is less than or equal to their hero's accuracy, they hit
+      switch(randomNum) { // the amount of damage they deal is based on the random number that was generated
+        case 0: // e.g. if the random number was 0
+          player.damageDealt = 1; // they deal 1 damage
           break;
         case 0.1:
           player.damageDealt = 2;
@@ -74,18 +75,19 @@ var player = {
         case 0.6:
           player.damageDealt = 7;
           break;
-        case 0.7:
+        case 0.7: // NOTE: only goes up to 0.7 because that is the highest possible accuracy a hero can obtain
           player.damageDealt = 8;
           break;
       }
-    } else if (randomNum > player.accuracy) {
+    } else if (randomNum > player.accuracy) { // else if the random number generated is greater than their hero's accuracy, they miss
         console.log('player didn\'t hit');
       }
-    computer.randomMove();
+    computer.randomMove(); // passes to computer's randomMove method
   },
+  // player defend handler that occurs if the player clicks their hero's defense ability
   defend: function() {
-    player.currentMove = 'defend';
-    computer.randomMove();
+    player.currentMove = 'defend'; // changes current move to attack
+    computer.randomMove(); // passes to computer's randomMove method
   }
 }
 
@@ -99,19 +101,23 @@ var computer = {
   'ultimate': 0,
   'currentMove': '',
   'damageDealt': 0,
+  // method that randomizes the current move for the computer (either attack or defend)
   randomMove: function() {
+    // generates a number between 1-10
     var randomNum = Math.floor(Math.random() * (11 - 1)) + 1;
-    if (randomNum <= 5) {
+    if (randomNum <= 5) { // if the randomNum is 1-5, computer attacks
       this.currentMove = 'attack';
-      this.attack();
-      game.checkCurrentMoves();
-    } else {
+      this.attack(); // passes to the computer's attack method
+      game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
+    } else { // else if the randomNum is 6-10, computer defends
         this.currentMove = 'defend';
-        this.defend();
-        game.checkCurrentMoves();
+        this.defend(); // passes to the computer's defend method
+        game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
     }
   },
+  // computer attack method
   attack: function() {
+    // works similar to player's attack method
     var randomNum = Math.round((Math.random() * 10)) / 10;
     if (randomNum <= this.accuracy) {
       switch(randomNum) {
@@ -144,6 +150,7 @@ var computer = {
           console.log('computer didn\'t hit');
       }
   },
+  // computer defend method
   defend: function() {
     console.log('computer defend method');
   }
@@ -236,6 +243,7 @@ var game = {
     console.log('inside both defend method');
     dom.turnOnPlayerButtons();
   },
+  // method that runs if both players chose opposing moves (one attack, one defend)
   attackDefend: function() {
     console.log('inside one attack and one defend method');
     dom.turnOnPlayerButtons();
@@ -511,12 +519,12 @@ var dom = {
         break;
     }
   },
-  // method that turns on the attacker's ability buttons
+  // method that turns on the attacker's ability buttons and adds the class player-buttons to be accessed later
   turnOnAttackerButtons: function() {
     $('#attacker-attack').on('click', player.attack).addClass('player-buttons');
     $('#attacker-defense').on('click', player.defend).addClass('player-buttons');
   },
-  // method that turns on the defender's ability buttons
+  // method that turns on the defender's ability buttons and adds the class player-buttons to be accessed later
   turnOnDefenderButtons: function() {
     $('#defender-attack').on('click', player.attack).addClass('player-buttons');
     $('#defender-defense').on('click', player.defend).addClass('player-buttons');
@@ -535,9 +543,9 @@ var dom = {
   },
   // method that changes the health displayed whenever either gets hit
   changeHealth: function() {
-    if (player.position === 'attack') {
-      $('#attacker-health').html('<strong>HEALTH: </strong>' + player.health);
-      $('#defender-health').html('<strong>HEALTH: </strong>' + computer.health);
+    if (player.position === 'attack') { // if player is the attacker
+      $('#attacker-health').html('<strong>HEALTH: </strong>' + player.health); // assigns player's health to the attacker side
+      $('#defender-health').html('<strong>HEALTH: </strong>' + computer.health); // assigns computer's health to the defender side
     } else {
         $('#defender-health').html('<strong>HEALTH: </strong>' + player.health);
         $('#attacker-health').html('<strong>HEALTH: </strong>' + computer.health);
