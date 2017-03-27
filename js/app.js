@@ -11,12 +11,12 @@ $(function() { // start window onload
 // game variables object, holds general variables that aren't always specific to a certain player, most importantly the hero pool and their stats
 var gameVariables = {
   'payload': 0,
-  'heroPool': ['genji', 'tracer', 'bastion', 'mei', 'reinhardt', 'd.va'],
+  'heroPool': ['genji', 'pharah', 'bastion', 'mei', 'winston', 'd.va'],
   'genji': {
     'accuracy': 0.7,
     'defense': 0.3
   },
-  'tracer': {
+  'pharah': {
     'accuracy': 0.7,
     'defense': 0.3
   },
@@ -28,7 +28,7 @@ var gameVariables = {
     'accuracy': 0.5,
     'defense': 0.5
   },
-  'reinhardt': {
+  'winston': {
     'accuracy': 0.3,
     'defense': 0.7
   },
@@ -76,7 +76,8 @@ var gameInitialization = {
     for (var i = 0; i < gameVariables.heroPool.length; i++) { // iterates through hero pool array
       if($userHero === gameVariables.heroPool[i]) {
         gameVariables.heroPool.splice([i], 1); // splices out the hero when found
-        this.computerHeroSelect();
+        dom.hideHeroSelect(); // calls hide hero select method to hide the screen
+        this.computerHeroSelect(); // passes onto computer hero select method
       }
     }
   },
@@ -85,8 +86,8 @@ var gameInitialization = {
     var randomNum = Math.floor(Math.random() * (gameVariables.heroPool.length - 1)); // randomly generates a valid index number from the hero pool
     var computerHero = gameVariables.heroPool[randomNum];
     computer.hero = computerHero; // sets the computer's hero to the randomly selected hero
-    computer.accuracy = gameVariables[computerHero].accuracy;
-    computer.defense = gameVariables[computerHero].defense;
+    computer.accuracy = gameVariables[computerHero].accuracy; // sets computer's accuracy to the randomly selected hero's
+    computer.defense = gameVariables[computerHero].defense; // sets computer's defense to the randomly selected hero's
 
   }
 }
@@ -120,7 +121,7 @@ var dom = {
   changeh2: function(subTitleText) {
     $('h2').html(subTitleText);
   },
-  // method that hides the position select screen
+  // method that hides the position select screen and calls for method to show hero select
   hidePositionSelect: function() {
     $('.position-select').hide();
     this.showHeroSelect();
@@ -132,5 +133,22 @@ var dom = {
     this.changeh2('TO BEGIN YOUR WATCH');
     // shows hero select screen
     $('.hero-select').show();
+  },
+  // method that hides the hero select screen and calls for method to show game screen
+  hideHeroSelect: function() {
+    $('.hero-select').hide();
+    this.showMainGame();
+  },
+  // method that shows the main gain screen
+  showMainGame: function() {
+    // changes header text depending on player position
+    if (player.position === 'attack') {
+      this.changeh1('ESCORT THE PAYLOAD!');
+    } else {
+        this.changeh1('STOP THE PAYLOAD!');
+    }
+    this.changeh2('THE WORLD\'S SAFETY DEPENDS ON YOU!');
+    // shows game screen
+    $('.main-game').show();
   }
 }

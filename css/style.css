@@ -11,18 +11,17 @@ body, html {
   color: #333;
 }
 ::-webkit-scrollbar-track {
-    background-color: rgb(84, 68, 68);
-  }
+  background-color: rgb(84, 68, 68);
+}
 
-  ::-webkit-scrollbar {
-    width: 2px;
-    height: 2px;
-    background-color: rgb(84, 68, 68);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: rgb(60, 119, 125);
-  }
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: rgb(84, 68, 68);
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(60, 119, 125);
+}
 /* ------ RESPONSIVE STYLING ( 0 - 700px width ) ------ */
 /* --- GENERAL --- */
 header {
@@ -59,12 +58,12 @@ h2 {
   display: show;
 }
 .position-select .blurb {
-    width: 85%;
-    padding: 20px;
-    margin: 10% auto 5% auto;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 5px;
-    transform: skewX(-1.5deg);
+  width: 85%;
+  padding: 20px;
+  margin: 10% auto 5% auto;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+  transform: skewX(-1.5deg);
 }
 .position-select h3 {
   color: rgb(60, 119, 125);
@@ -103,7 +102,6 @@ h2 {
   cursor: pointer;
   box-sizing: border-box;
 }
-
 .position-select button:hover {
   background: rgb(254, 151, 77);
   box-shadow: 2px 2px rgb(74, 58, 58);
@@ -212,3 +210,64 @@ h2 {
   -moz-transition: .3s linear;
   -webkit-transition: .3s linear;
 }
+/* --- MAIN GAME SCREEN --- */
+.main-game {
+  display: none;
+  height: calc(100% - 130px);
+  overflow: auto;
+}
+/* payload meter */
+.payload-meter {
+  width: 90%;
+  height: 10px;
+  margin: 50px auto;
+  background: rgb(60, 119, 125);
+}
+#payload {
+  width: 20%;
+  position: relative;
+  top: -80px;
+  left: 15px;
+}
+#payload-threshold {
+  width: 15%;
+  position: relative;
+  top: -80px;
+  left: 61%;
+}
+/* heroes */
+.attacker {
+  left: 0px;
+  position: absolute;
+}
+.defender {
+  left: 53%;
+  position: absolute;
+  transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+}
+#genji {
+  width: 45%;
+}
+#pharah {
+  width: 45%;
+  display: none;
+}
+#bastion {
+  width: 47%;
+  display: none;
+}
+#mei {
+  width: 44%;
+  margin-top: 10px;
+  display: none;
+}
+#winston {
+  width: 46%;
+  display: none;
+}
+#dva {
+  width: 45%;
+}
+/* hero info */
