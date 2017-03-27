@@ -221,7 +221,7 @@ h2 {
   width: 90%;
   height: 10px;
   margin: 50px auto;
-  background: rgb(60, 119, 125);
+  background: rgba(254, 151, 77, 0.9);
 }
 #payload {
   width: 20%;
