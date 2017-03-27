@@ -271,3 +271,79 @@ h2 {
   width: 45%;
 }
 /* hero info */
+.players {
+  position: relative;
+  top: 260px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 38%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  transform: skewX(-2deg);
+  display: inline-block;
+  font-size: 2vw;
+}
+.pos {
+  font-size: 17px;
+  font-weight: 700;
+  color: rgb(60, 119, 125);
+  font-size: 2.5vw;
+}
+.main-game h3 {
+  display: inline-block;
+  color: rgb(84, 68, 68);
+  font-size: 2.5vw;
+  text-transform: uppercase;
+  font-style: italic;
+  padding: 0px;
+  margin: 0px;
+}
+#attack {
+  margin-left: -200px;
+}
+#defend {
+  margin-left: 90px;
+}
+#attack-player {
+  left: -200px;
+}
+#defense-player {
+  left: 100px;
+}
+/* hero abilities */
+.attacker-options, .defender-options {
+  width: 38%;
+  position: relative;
+  display: inline-block;
+  top: 270px;
+  left: 11px;
+}
+.defender-options {
+  left: 103px;
+}
+.attacker-options button, .defender-options button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 0px transparent;
+  border-radius: 10px;
+  transform: skewX(-5deg);
+  background: rgb(60, 119, 125);
+  box-shadow: 2px 2px rgba(254, 151, 77, 0.5);
+  color: rgba(255,255,255,0.8);
+  font-size: 2vw;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
+}
+
+.attacker-options button:hover, .defender-options button:hover {
+  background: rgba(254, 151, 77, 0.9);
+  box-shadow: 2px 2px rgb(60, 119, 125);
+  color: rgba(255,255,255,0.8);
+  transition: .3s linear;
+  -moz-transition: .3s linear;
+  -webkit-transition: .3s linear;
+}
