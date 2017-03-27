@@ -246,6 +246,19 @@ var game = {
   // method that runs if both players chose opposing moves (one attack, one defend)
   attackDefend: function() {
     console.log('inside one attack and one defend method');
+    if (player.currentMove === 'attack') {
+      var defendedDamage = computer.defense * player.damageDealt;
+      var remainingDamage = player.damageDealt - defendedDamage;
+      computer.health -= Math.floor(remainingDamage);
+      console.log('player attack');
+      dom.changeHealth();
+    } else {
+        var defendedDamage = player.defense * computer.damageDealt;
+        var remainingDamage = computer.damageDealt - defendedDamage;
+        player.health -= Math.floor(remainingDamage);
+        console.log('computer attack');
+        dom.changeHealth();
+    }
     dom.turnOnPlayerButtons();
   }
 }
