@@ -15,27 +15,45 @@ var gameVariables = {
   'heroPool': ['genji', 'pharah', 'bastion', 'mei', 'winston', 'd.va'],
   'genji': {
     'accuracy': 0.7,
-    'defense': 0.3
+    'defense': 0.3,
+    'attack': 'shurikens',
+    'defend': 'deflect',
+    'ultimate': 'dragon blade'
   },
   'pharah': {
     'accuracy': 0.7,
-    'defense': 0.3
+    'defense': 0.3,
+    'attack': 'rocket launcher',
+    'defend': 'jump jet',
+    'ultimate': 'barrage'
   },
   'bastion': {
     'accuracy': 0.5,
     'defense': 0.5,
+    'attack': 'gattling gun',
+    'defend': 'self-repair',
+    'ultimate': 'tank form'
   },
   'mei': {
     'accuracy': 0.5,
-    'defense': 0.5
+    'defense': 0.5,
+    'attack': 'endothermic blaster',
+    'defend': 'ice block',
+    'ultimate': 'blizzard'
   },
   'winston': {
     'accuracy': 0.3,
-    'defense': 0.7
+    'defense': 0.7,
+    'attack': 'tesla cannon',
+    'defend': 'barrier protector',
+    'ultimate': 'primal rage'
   },
   'd.va': {
     'accuracy': 0.3,
-    'defense': 0.7
+    'defense': 0.7,
+    'attack': 'fusion cannons',
+    'defend': 'defense matrix',
+    'ultimate': 'self-destruct'
   }
 }
 
@@ -233,15 +251,24 @@ var game = {
   },
   // method that subtracts from both player's health depending on the damage dealt
   bothAttack: function() {
+    dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
+    dom.addActions('computer damaged by ' + player.damageDealt + ' hp!');
+    dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
+    dom.addActions('player damaged by ' + computer.damageDealt + ' hp!');
+    dom.displayActionsInitialization();
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
     dom.changeHealth(); // calls method to change the health displayed
     this.movePaylod(); // calls method to move payload
-    this.healthCheck();
+    this.healthCheck(); // calls method to check health
     dom.turnOnPlayerButtons(); // turns on the player's buttons to allow making another choice until someone wins
   },
   // method that tells player that both defended and thus did nothing
   bothDefend: function() {
+    dom.addActions('player defended with ' + gameVariables[player.hero].defend + '!');
+    dom.addActions('computer defended with ' + gameVariables[computer.hero].defend + '!');
+    dom.addActions('no one got hit!')
+    dom.displayActionsInitialization();
     this.healthCheck();
     dom.turnOnPlayerButtons();
   },
@@ -249,12 +276,20 @@ var game = {
   attackDefend: function() {
     if (player.currentMove === 'attack') { // if the player is the one who chose an attack move
       var defendedDamage = computer.defense * player.damageDealt; // calculates how much the computer defended
-      var remainingDamage = player.damageDealt - defendedDamage; // calculates the remaining damage that wasn't defended
-      computer.health -= Math.round(remainingDamage); // subtracts the remaining damage from the computer's health
+      var remainingDamage = Math.round(player.damageDealt - defendedDamage); // calculates the remaining damage that wasn't defended
+      dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
+      dom.addActions('but computer defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[computer.hero].defend + '!');
+      dom.addActions('computer only damaged by ' + remainingDamage + 'hp!');
+      dom.displayActionsInitialization();
+      computer.health -= remainingDamage; // subtracts the remaining damage from the computer's health
       dom.changeHealth(); // calls method to change the health displayed
     } else { // else if the player is the one who chose a defense move, does the reverse
         var defendedDamage = player.defense * computer.damageDealt;
-        var remainingDamage = computer.damageDealt - defendedDamage;
+        var remainingDamage = Math.round(computer.damageDealt - defendedDamage);
+        dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
+        dom.addActions('but player defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[player.hero].defend + '!');
+        dom.addActions('player only damaged by ' + remainingDamage + 'hp!');
+        dom.displayActionsInitialization();
         player.health -= Math.round(remainingDamage);
         dom.changeHealth();
     }
@@ -294,7 +329,7 @@ var game = {
       if (player.position === 'attack') {
         console.log('player wins - payload check');
       } else if (computer.position === 'attack') {
-          console.log('computer wins');
+          console.log('computer wins - payload check');
       }
     }
   }
@@ -432,68 +467,68 @@ var dom = {
     switch(player.hero) {
       case 'genji':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: SHURIKENS');
-          $('#attacker-defense').html('DEFEND: DEFLECT');
-          $('#attacker-ultimate').html('ULTIMATE: DRAGON BLADE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.genji.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.genji.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.genji.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: SHURIKENS');
-          $('#defender-defense').html('DEFEND: DEFLECT');
-          $('#defender-ultimate').html('ULTIMATE: DRAGON BLADE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.genji.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.genji.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.genji.ultimate);
         }
         break;
       case 'pharah':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: ROCKET LAUNCHER');
-          $('#attacker-defense').html('DEFEND: JUMP JET');
-          $('#attacker-ultimate').html('ULTIMATE: BARRAGE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.pharah.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.pharah.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.pharah.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: ROCKET LAUNCHER');
-          $('#defender-defense').html('DEFEND: JUMP JET');
-          $('#defender-ultimate').html('ULTIMATE: BARRAGE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.pharah.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.pharah.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.pharah.ultimate);
         }
         break;
       case 'bastion':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: GATTLING GUN');
-          $('#attacker-defense').html('DEFEND: SELF-REPAIR');
-          $('#attacker-ultimate').html('ULTIMATE: TANK FORM');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.bastion.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.bastion.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.bastion.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: GATTLING GUN');
-          $('#defender-defense').html('DEFEND: SELF-REPAIR');
-          $('#defender-ultimate').html('ULTIMATE: TANK FORM');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.bastion.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.bastion.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.bastion.ultimate);
         }
         break;
       case 'mei':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: ENDOTHERMIC BLASTER');
-          $('#attacker-defense').html('DEFEND: ICE BLOCK');
-          $('#attacker-ultimate').html('ULTIMATE: BLIZZARD');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.mei.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.mei.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.mei.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: ENDOTHERMIC BLASTER');
-          $('#defender-defense').html('DEFEND: ICE BLOCK');
-          $('#defender-ultimate').html('ULTIMATE: BLIZZARD');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.mei.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.mei.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.mei.ultimate);
         }
         break;
       case 'winston':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: TESLA CANNON');
-          $('#attacker-defense').html('DEFEND: BARRIER PROTECTOR');
-          $('#attacker-ultimate').html('ULTIMATE: PRIMAL RAGE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.winston.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.winston.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.winston.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: TESLA CANNON');
-          $('#defender-defense').html('DEFEND: BARRIER PROTECTOR');
-          $('#defender-ultimate').html('ULTIMATE: PRIMAL RAGE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.winston.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.winston.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.winston.ultimate);
         }
         break;
       case 'd.va':
         if (player.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: FUSION CANNONS');
-          $('#attacker-defense').html('DEFEND: DEFENSE MATRIX');
-          $('#attacker-ultimate').html('ULTIMATE: SELF-DESTRUCT');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables['d.va'].attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables['d.va'].defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables['d.va'].ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: FUSION CANNONS');
-          $('#defender-defense').html('DEFEND: DEFENSE MATRIX');
-          $('#defender-ultimate').html('ULTIMATE: SELF-DESTRUCT');
+          $('#defender-attack').html('ATTACK: ' + gameVariables['d.va'].attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables['d.va'].defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables['d.va'].ultimate);
         }
         break;
     }
@@ -503,68 +538,68 @@ var dom = {
     switch(computer.hero) {
       case 'genji':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: SHURIKENS');
-          $('#attacker-defense').html('DEFEND: DEFLECT');
-          $('#attacker-ultimate').html('ULTIMATE: DRAGON BLADE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.genji.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.genji.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.genji.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: SHURIKENS');
-          $('#defender-defense').html('DEFEND: DEFLECT');
-          $('#defender-ultimate').html('ULTIMATE: DRAGON BLADE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.genji.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.genji.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.genji.ultimate);
         }
         break;
       case 'pharah':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: ROCKET LAUNCHER');
-          $('#attacker-defense').html('DEFEND: JUMP JET');
-          $('#attacker-ultimate').html('ULTIMATE: BARRAGE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.pharah.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.pharah.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.pharah.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: ROCKET LAUNCHER');
-          $('#defender-defense').html('DEFEND: JUMP JET');
-          $('#defender-ultimate').html('ULTIMATE: BARRAGE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.pharah.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.pharah.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.pharah.ultimate);
         }
         break;
       case 'bastion':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: GATTLING GUN');
-          $('#attacker-defense').html('DEFEND: SELF-REPAIR');
-          $('#attacker-ultimate').html('ULTIMATE: TANK FORM');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.bastion.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.bastion.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.bastion.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: GATTLING GUN');
-          $('#defender-defense').html('DEFEND: SELF-REPAIR');
-          $('#defender-ultimate').html('ULTIMATE: TANK FORM');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.bastion.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.bastion.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.bastion.ultimate);
         }
         break;
       case 'mei':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: ENDOTHERMIC BLASTER');
-          $('#attacker-defense').html('DEFEND: ICE BLOCK');
-          $('#attacker-ultimate').html('ULTIMATE: BLIZZARD');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.mei.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.mei.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.mei.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: ENDOTHERMIC BLASTER');
-          $('#defender-defense').html('DEFEND: ICE BLOCK');
-          $('#defender-ultimate').html('ULTIMATE: BLIZZARD');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.mei.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.mei.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.mei.ultimate);
         }
         break;
       case 'winston':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: TESLA CANNON');
-          $('#attacker-defense').html('DEFEND: BARRIER PROTECTOR');
-          $('#attacker-ultimate').html('ULTIMATE: PRIMAL RAGE');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables.winston.attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables.winston.defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables.winston.ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: TESLA CANNON');
-          $('#defender-defense').html('DEFEND: BARRIER PROTECTOR');
-          $('#defender-ultimate').html('ULTIMATE: PRIMAL RAGE');
+          $('#defender-attack').html('ATTACK: ' + gameVariables.winston.attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables.winston.defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables.winston.ultimate);
         }
         break;
       case 'd.va':
         if (computer.position === 'attack') {
-          $('#attacker-attack').html('ATTACK: FUSION CANNONS');
-          $('#attacker-defense').html('DEFEND: DEFENSE MATRIX');
-          $('#attacker-ultimate').html('ULTIMATE: SELF-DESTRUCT');
+          $('#attacker-attack').html('ATTACK: ' + gameVariables['d.va'].attack);
+          $('#attacker-defense').html('DEFEND: ' + gameVariables['d.va'].defend);
+          $('#attacker-ultimate').html('ULTIMATE: ' + gameVariables['d.va'].ultimate);
         } else {
-          $('#defender-attack').html('ATTACK: FUSION CANNONS');
-          $('#defender-defense').html('DEFEND: DEFENSE MATRIX');
-          $('#defender-ultimate').html('ULTIMATE: SELF-DESTRUCT');
+          $('#defender-attack').html('ATTACK: ' + gameVariables['d.va'].attack);
+          $('#defender-defense').html('DEFEND: ' + gameVariables['d.va'].defend);
+          $('#defender-ultimate').html('ULTIMATE: ' + gameVariables['d.va'].ultimate);
         }
         break;
     }
@@ -600,5 +635,36 @@ var dom = {
         $('#defender-health').html('<strong>HEALTH: </strong>' + player.health);
         $('#attacker-health').html('<strong>HEALTH: </strong>' + computer.health);
     }
+  },
+  // empty array and index number to hold the current action strings
+  'currentActions': [],
+  'currentActionsIndex': 0,
+  // method that pushes current action strings into the empty currentActions array
+  addActions: function(action) {
+    this.currentActions.push(action);
+  },
+  // following three methods: loops through the current actions array and displays them on screen
+  displayActionsInitialization: function() {
+    var $actions = $('.player-actions');
+    $actions.hide(); // hides the already shown text for smoother transition
+    $actions.html(dom.currentActions[dom.currentActionsIndex]); // changes the html of the prompt text to show the action of the round (from the array)
+    $actions.fadeIn(1800).fadeOut(1800); // fades the action in & out
+    setTimeout(dom.displayActionLoop, 1800); // calls the following function to allow delay between each action displaying
+  },
+  displayActionLoop: function() {
+    var $actions = $('.player-actions');
+    dom.currentActionsIndex ++; // increases the index number
+    if (dom.currentActionsIndex  >= dom.currentActions.length) { // if the index number is greater than or equal to the length of the actions array
+      dom.currentActionsIndex = 0; // set the index back to zero
+      dom.currentActions = []; // empty the array
+      setTimeout(dom.displayDefaultPrompt, 1800); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
+      return; // leave this loop
+    } else {
+      setTimeout(dom.displayActionsInitialization, 1800); // go back to the initialization function to display the next action
+    }
+  },
+  displayDefaultPrompt: function() {
+    var $actions = $('.player-actions');
+    $actions.html('select your next move!').fadeIn(1000);
   }
 }

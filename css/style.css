@@ -216,6 +216,18 @@ h2 {
   height: calc(100% - 130px);
   overflow: auto;
 }
+/* actions display */
+.player-actions {
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-style: italic;
+  letter-spacing: 1px;
+  margin-top: 16px;
+  position: absolute;
+}
 /* payload meter */
 .payload-meter {
   width: 90%;
@@ -336,6 +348,7 @@ h2 {
   color: rgba(255,255,255,0.8);
   font-size: 1.8vw;
   font-weight: 700;
+  text-transform: uppercase;
   cursor: pointer;
   transition: .3s linear;
   -moz-transition: .3s linear;
