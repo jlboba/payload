@@ -11,6 +11,7 @@ $(function() { // start window onload
 // game variables object, holds general variables that aren't always specific to a certain player, most importantly the hero pool and their stats
 var gameVariables = {
   'payload': 0,
+  'payloadThreshold': 20,
   'heroPool': ['genji', 'pharah', 'bastion', 'mei', 'winston', 'd.va'],
   'genji': {
     'accuracy': 0.7,
@@ -232,34 +233,70 @@ var game = {
   },
   // method that subtracts from both player's health depending on the damage dealt
   bothAttack: function() {
-    console.log('inside both attack method');
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
     dom.changeHealth(); // calls method to change the health displayed
+    this.movePaylod(); // calls method to move payload
+    this.healthCheck();
     dom.turnOnPlayerButtons(); // turns on the player's buttons to allow making another choice until someone wins
   },
   // method that tells player that both defended and thus did nothing
   bothDefend: function() {
-    console.log('inside both defend method');
+    this.healthCheck();
     dom.turnOnPlayerButtons();
   },
   // method that runs if both players chose opposing moves (one attack, one defend)
   attackDefend: function() {
-    console.log('inside one attack and one defend method');
-    if (player.currentMove === 'attack') {
-      var defendedDamage = computer.defense * player.damageDealt;
-      var remainingDamage = player.damageDealt - defendedDamage;
-      computer.health -= Math.floor(remainingDamage);
-      console.log('player attack');
-      dom.changeHealth();
-    } else {
+    if (player.currentMove === 'attack') { // if the player is the one who chose an attack move
+      var defendedDamage = computer.defense * player.damageDealt; // calculates how much the computer defended
+      var remainingDamage = player.damageDealt - defendedDamage; // calculates the remaining damage that wasn't defended
+      computer.health -= Math.round(remainingDamage); // subtracts the remaining damage from the computer's health
+      dom.changeHealth(); // calls method to change the health displayed
+    } else { // else if the player is the one who chose a defense move, does the reverse
         var defendedDamage = player.defense * computer.damageDealt;
         var remainingDamage = computer.damageDealt - defendedDamage;
-        player.health -= Math.floor(remainingDamage);
-        console.log('computer attack');
+        player.health -= Math.round(remainingDamage);
         dom.changeHealth();
     }
-    dom.turnOnPlayerButtons();
+    this.movePaylod(); // calls the move payload method
+    this.healthCheck();
+    dom.turnOnPlayerButtons(); // calls turn on player buttons to allow user to choose their next move
+  },
+  // method to move the payload upon successful attacks from the attacker
+  movePaylod: function() {
+    if ((player.position === 'attack') && (player.currentMove === 'attack')) {
+      if (player.damageDealt > 0) {
+        gameVariables.payload++;
+      }
+    }
+    if ((computer.position === 'attack') && (computer.currentMove === 'attack')) {
+      if (computer.damageDealt > 0) {
+        gameVariables.payload++;
+      }
+    }
+  },
+  // method that checks both player's health
+  healthCheck: function() {
+    if ((player.health > 0) && (computer.health > 0)) {
+      console.log('both healthy');
+      this.payloadCheck();
+    } else if ((player.health > 0) && (computer.health < 0)) {
+        console.log('player wins');
+    } else if ((player.health < 0) && (computer.health > 0)) {
+        console.log('computer wins');
+    } else if ((player.health < 0) && (computer.health < 0)) {
+        console.log('draw');
+    }
+  },
+  // method that checks payload's distance
+  payloadCheck: function() {
+    if (gameVariables.payload === gameVariables.payloadThreshold) {
+      if (player.position === 'attack') {
+        console.log('player wins - payload check');
+      } else if (computer.position === 'attack') {
+          console.log('computer wins');
+      }
+    }
   }
 }
 
