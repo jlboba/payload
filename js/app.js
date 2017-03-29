@@ -115,7 +115,7 @@ var player = {
 var computer = {
   'position': '',
   'hero': '',
-  'health': 20,
+  'health': 100,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
