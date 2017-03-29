@@ -384,8 +384,11 @@ h2 {
   -moz-transition: .3s linear;
   -webkit-transition: .3s linear;
 }
+.computer-buttons{
+  opacity: 0.65;
+}
 .ult {
-  opacity: 0.5;
+  opacity: 0.65;
 }
 /* END GAME SCREEN */
 .end-game {

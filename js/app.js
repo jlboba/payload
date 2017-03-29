@@ -627,11 +627,15 @@ var dom = {
   turnOnAttackerButtons: function() {
     $('#attacker-attack').on('click', player.attack).addClass('player-buttons');
     $('#attacker-defense').on('click', player.defend).addClass('player-buttons');
+    $('#defender-attack').addClass('computer-buttons');
+    $('#defender-defense').addClass('computer-buttons');
   },
   // method that turns on the defender's ability buttons and adds the class player-buttons to be accessed later
   turnOnDefenderButtons: function() {
     $('#defender-attack').on('click', player.attack).addClass('player-buttons');
     $('#defender-defense').on('click', player.defend).addClass('player-buttons');
+    $('#attacker-attack').addClass('computer-buttons');
+    $('#attacker-defense').addClass('computer-buttons');
   },
   // method that turns off all ability buttons
   turnOffButtons: function() {
