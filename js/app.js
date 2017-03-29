@@ -11,7 +11,7 @@ $(function() { // start window onload
 // game variables object, holds general variables that aren't always specific to a certain player, most importantly the hero pool and their stats
 var gameVariables = {
   'payload': 0,
-  'payloadThreshold': 20,
+  'payloadThreshold': 80,
   'heroPool': ['genji', 'pharah', 'bastion', 'mei', 'winston', 'd.va'],
   'genji': {
     'accuracy': 0.7,
@@ -248,28 +248,17 @@ var game = {
   },
   // method that subtracts from both player's health depending on the damage dealt
   bothAttack: function() {
-    if (player.damageDealt > 0) {
-      dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
-      dom.addActions('computer damaged by ' + player.damageDealt + ' hp!');
-    }
-    if (computer.damageDealt > 0) {
-      dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
-      dom.addActions('player damaged by ' + computer.damageDealt + ' hp!');
-    }
-    dom.displayActionsInitialization();
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
+    dom.bothAttackActions(); // calls method to display the actions on screen
     dom.changeHealth(); // calls method to change the health displayed
-    this.movePaylod(); // calls method to move payload
+    this.movePayload(); // calls method to move payload
     this.healthCheck(); // calls method to check health
     dom.turnOnPlayerButtons(); // turns on the player's buttons to allow making another choice until someone wins
   },
   // method that tells player that both defended and thus did nothing
   bothDefend: function() {
-    dom.addActions('player defended with ' + gameVariables[player.hero].defend + '!');
-    dom.addActions('computer defended with ' + gameVariables[computer.hero].defend + '!');
-    dom.addActions('no one got hit!')
-    dom.displayActionsInitialization();
+    dom.bothDefendActions();
     this.healthCheck();
     dom.turnOnPlayerButtons();
   },
@@ -278,40 +267,61 @@ var game = {
     if (player.currentMove === 'attack') { // if the player is the one who chose an attack move
       var defendedDamage = computer.defense * player.damageDealt; // calculates how much the computer defended
       var remainingDamage = Math.round(player.damageDealt - defendedDamage); // calculates the remaining damage that wasn't defended
+      computer.health -= remainingDamage; // subtracts the remaining damage from the computer's health
       if (player.damageDealt > 0) {
         dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
         dom.addActions('but computer defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[computer.hero].defend + '!');
         dom.addActions('computer only damaged by ' + remainingDamage + 'hp!');
+      } else if (player.damageDealt === 0) {
+          dom.addActions('computer defended with ' + gameVariables[computer.hero].defend + ' just in case!');
       }
       dom.displayActionsInitialization();
-      computer.health -= remainingDamage; // subtracts the remaining damage from the computer's health
       dom.changeHealth(); // calls method to change the health displayed
     } else { // else if the player is the one who chose a defense move, does the reverse
         var defendedDamage = player.defense * computer.damageDealt;
         var remainingDamage = Math.round(computer.damageDealt - defendedDamage);
+        player.health -= Math.round(remainingDamage);
         if (computer.damageDealt > 0) {
           dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
           dom.addActions('but player defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[player.hero].defend + '!');
           dom.addActions('player only damaged by ' + remainingDamage + 'hp!');
+        } else if (computer.damageDealt === 0) {
+            dom.addActions('player defended with ' + gameVariables[player.hero].defend + ' just in case!');
         }
         dom.displayActionsInitialization();
-        player.health -= Math.round(remainingDamage);
         dom.changeHealth();
     }
-    this.movePaylod(); // calls the move payload method
+    this.movePayloadDefended(); // calls the move payload defended method (moves a little less than if the attack wasn't defended)
     this.healthCheck();
     dom.turnOnPlayerButtons(); // calls turn on player buttons to allow user to choose their next move
   },
-  // method to move the payload upon successful attacks from the attacker
-  movePaylod: function() {
+  // method to move the payload upon successful attacks from the attacker with no defense
+  movePayload: function() {
     if ((player.position === 'attack') && (player.currentMove === 'attack')) {
       if (player.damageDealt > 0) {
-        gameVariables.payload++;
+        gameVariables.payload += 6;
+        dom.translatePayload();
       }
     }
     if ((computer.position === 'attack') && (computer.currentMove === 'attack')) {
       if (computer.damageDealt > 0) {
-        gameVariables.payload++;
+        gameVariables.payload += 6;
+        dom.translatePayload();
+      }
+    }
+  },
+  // method to move the payload upon successful attacks from attacker, but was defended a little bit
+  movePayloadDefended: function() {
+    if ((player.position === 'attack') && (player.currentMove === 'attack')) {
+      if (player.damageDealt > 0) {
+        gameVariables.payload += 4;
+        dom.translatePayload();
+      }
+    }
+    if ((computer.position === 'attack') && (computer.currentMove === 'attack')) {
+      if (computer.damageDealt > 0) {
+        gameVariables.payload += 4;
+        dom.translatePayload();
       }
     }
   },
@@ -653,8 +663,8 @@ var dom = {
     var $actions = $('.player-actions');
     $actions.hide(); // hides the already shown text for smoother transition
     $actions.html(dom.currentActions[dom.currentActionsIndex]); // changes the html of the prompt text to show the action of the round (from the array)
-    $actions.fadeIn(1500).fadeOut(1500); // fades the action in & out
-    setTimeout(dom.displayActionLoop, 1500); // calls the following function to allow delay between each action displaying
+    $actions.fadeIn(1000).fadeOut(1000); // fades the action in & out
+    setTimeout(dom.displayActionLoop, 1000); // calls the following function to allow delay between each action displaying
   },
   displayActionLoop: function() {
     var $actions = $('.player-actions');
@@ -662,14 +672,36 @@ var dom = {
     if (dom.currentActionsIndex  >= dom.currentActions.length) { // if the index number is greater than or equal to the length of the actions array
       dom.currentActionsIndex = 0; // set the index back to zero
       dom.currentActions = []; // empty the array
-      setTimeout(dom.displayDefaultPrompt, 1500); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
+      setTimeout(dom.displayDefaultPrompt, 1000); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
       return; // leave this loop
     } else {
-      setTimeout(dom.displayActionsInitialization, 1500); // go back to the initialization function to display the next action
+      setTimeout(dom.displayActionsInitialization, 1000); // go back to the initialization function to display the next action
     }
   },
   displayDefaultPrompt: function() {
     var $actions = $('.player-actions');
     $actions.html('select your next move!').fadeIn(1000);
+  },
+  // displays the actions for when both players attack
+  bothAttackActions: function() {
+    if (player.damageDealt > 0) {
+      this.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
+      this.addActions('computer damaged by ' + player.damageDealt + ' hp!');
+    }
+    if (computer.damageDealt > 0) {
+      this.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
+      this.addActions('player damaged by ' + computer.damageDealt + ' hp!');
+    }
+    this.displayActionsInitialization();
+  },
+  // displays the actions for when both players defend
+  bothDefendActions: function() {
+    this.addActions('player defended with ' + gameVariables[player.hero].defend + '!');
+    this.addActions('computer defended with ' + gameVariables[computer.hero].defend + '!');
+    this.addActions('no one got hit!')
+    this.displayActionsInitialization();
+  },
+  translatePayload: function() {
+    $('#payload').animate({'left': gameVariables.payload + '%'}, 1000).css('z-index', '1');
   }
 }
