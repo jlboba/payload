@@ -328,27 +328,30 @@ var game = {
   // method that checks both player's health
   healthCheck: function() {
     if ((player.health > 0) && (computer.health > 0)) {
-      console.log('both healthy');
       this.payloadCheck();
-    } else if ((player.health > 0) && (computer.health < 0)) {
-        console.log('player wins');
-        gameVariables.payload = gameVariables.payloadThreshold;
-        dom.translatePayload();
-    } else if ((player.health < 0) && (computer.health > 0)) {
-        console.log('computer wins');
-        gameVariables.payload = gameVariables.payloadThreshold;
-        dom.translatePayload();
-    } else if ((player.health < 0) && (computer.health < 0)) {
-        console.log('draw');
+    } else if ((player.health > 0) && (computer.health <= 0)) {
+        if (player.position === 'attack') {
+          gameVariables.payload = gameVariables.payloadThreshold;
+          dom.translatePayload();
+        }
+        setTimeout(dom.showWinScreen, 3000);
+    } else if ((player.health <= 0) && (computer.health > 0)) {
+        if (computer.position === 'attack') {
+          gameVariables.payload = gameVariables.payloadThreshold;
+          dom.translatePayload();
+        }
+        setTimeout(dom.showLossScreen, 3000);
+    } else if ((player.health <= 0) && (computer.health <= 0)) {
+        setTimeout(dom.showDrawScreen, 3000);
     }
   },
   // method that checks payload's distance
   payloadCheck: function() {
     if (gameVariables.payload === gameVariables.payloadThreshold) {
       if (player.position === 'attack') {
-        console.log('player wins - payload check');
+        setTimeout(dom.showWinScreen, 3000);
       } else if (computer.position === 'attack') {
-          console.log('computer wins - payload check');
+          setTimeout(dom.showLossScreen, 3000);
       }
     }
   }
@@ -707,5 +710,66 @@ var dom = {
   },
   translatePayload: function() {
     $('#payload').animate({'left': gameVariables.payload + '%'}, 1000).css('z-index', '1');
+  },
+  // hides main game screen
+  hideMainGameScreen: function() {
+    $('.main-game').hide();
+  },
+  showPlayerHeroEndPic: function() {
+    switch(player.hero) {
+      case 'genji':
+      $('#genji-end').show();
+      break;
+      case 'pharah':
+      $('#pharah-end').show();
+      break;
+      case 'bastion':
+      $('#bastion-end').show();
+      break;
+      case 'mei':
+      $('#mei-end').show();
+      break;
+      case 'winston':
+      $('#winston-end').show();
+      break;
+      case 'd.va':
+      $('#dva-end').show();
+      break;
+    }
+  },
+  // displays the win screen
+  showWinScreen: function() {
+    dom.hideMainGameScreen();
+    if (player.position === 'attack') {
+      dom.changeh1('you escorted the payload!');
+    } else if (player.position === 'defense') {
+        dom.changeh1('you defended the watchpoint!');
+    }
+    dom.changeh2('the world is now safe for another day');
+    $('#win-game').show();
+    dom.showPlayerHeroEndPic();
+    $('.end-game').show();
+  },
+  // displays the loss screen
+  showLossScreen: function() {
+    dom.hideMainGameScreen();
+    if (player.position === 'attack') {
+      dom.changeh1('you failed to escort the payload!');
+    } else if (player.position === 'defense') {
+        dom.changeh1('the enemies infiltrated the watchpoint!');
+    }
+    dom.changeh2('the world is quickly falling apart!');
+    $('#loss-draw').show();
+    dom.showPlayerHeroEndPic();
+    $('.end-game').show();
+  },
+  // displays the draw screen
+  showDrawScreen: function() {
+    dom.hideMainGameScreen();
+    dom.changeh1('you failed your mission!');
+    dom.changeh2('but hey, at least the enemy died too?');
+    $('#loss-draw').show();
+    dom.showPlayerHeroEndPic();
+    $('.end-game').show();
   }
 }

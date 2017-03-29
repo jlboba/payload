@@ -26,7 +26,7 @@ body, html {
 /* --- GENERAL --- */
 header {
   width: 100%;
-  height: 130px;
+  min-height: 130px;
   background: rgba(255, 255, 255, 0.6);
   padding: 20px;
   box-sizing: border-box;
@@ -43,6 +43,7 @@ h1 {
   text-shadow: 1px 1px rgb(84, 68, 68);
   margin: 0;
   padding-top: 10px;
+  text-transform: uppercase;
 }
 h2 {
   font-family: 'Roboto Condensed';
@@ -52,6 +53,7 @@ h2 {
   color: rgb(84, 68, 68);
   margin: 0;
   padding: 0;
+  text-transform: uppercase;
 }
 /* --- OPENING SCREEN --- */
 .position-select {
@@ -364,4 +366,66 @@ h2 {
 }
 .ult {
   opacity: 0.5;
+}
+/* END GAME SCREEN */
+.end-game {
+  display: show;
+  text-align: center;
+}
+/* win screen */
+#win-game {
+  width: 45%;
+  margin-left: -6%;
+  position: absolute;
+  display: none;
+}
+/* loss & draw screen */
+#loss-draw {
+  width: 45%;
+  margin-left: -6%;
+  position: absolute;
+  display: none;
+}
+/* heroes */
+#genji-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 20%;
+  margin-left: -35%;
+  display: none;
+}
+#pharah-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 20%;
+  margin-left: -35%;
+  display: none;
+}
+#bastion-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 20%;
+  margin-left: -40%;
+  display: none;
+}
+#mei-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 15%;
+  margin-left: -40%;
+  display: none;
+}
+#winston-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 20%;
+  margin-left: -40%;
+  display: none;
+}
+#dva-end {
+  width: 50%;
+  position: absolute;
+  margin-top: 20%;
+  margin-left: -35%;
+  display: none;
 }
