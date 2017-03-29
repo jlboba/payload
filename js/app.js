@@ -332,8 +332,12 @@ var game = {
       this.payloadCheck();
     } else if ((player.health > 0) && (computer.health < 0)) {
         console.log('player wins');
+        gameVariables.payload = gameVariables.payloadThreshold;
+        dom.translatePayload();
     } else if ((player.health < 0) && (computer.health > 0)) {
         console.log('computer wins');
+        gameVariables.payload = gameVariables.payloadThreshold;
+        dom.translatePayload();
     } else if ((player.health < 0) && (computer.health < 0)) {
         console.log('draw');
     }
