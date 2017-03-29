@@ -115,7 +115,7 @@ var player = {
 var computer = {
   'position': '',
   'hero': '',
-  'health': 100,
+  'health': 20,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
@@ -254,13 +254,11 @@ var game = {
     dom.changeHealth(); // calls method to change the health displayed
     this.movePayload(); // calls method to move payload
     this.healthCheck(); // calls method to check health
-    dom.turnOnPlayerButtons(); // turns on the player's buttons to allow making another choice until someone wins
   },
   // method that tells player that both defended and thus did nothing
   bothDefend: function() {
     dom.bothDefendActions();
     this.healthCheck();
-    dom.turnOnPlayerButtons();
   },
   // method that runs if both players chose opposing moves (one attack, one defend)
   attackDefend: function() {
@@ -293,7 +291,6 @@ var game = {
     }
     this.movePayloadDefended(); // calls the move payload defended method (moves a little less than if the attack wasn't defended)
     this.healthCheck();
-    dom.turnOnPlayerButtons(); // calls turn on player buttons to allow user to choose their next move
   },
   // method to move the payload upon successful attacks from the attacker with no defense
   movePayload: function() {
@@ -680,6 +677,7 @@ var dom = {
       dom.currentActionsIndex = 0; // set the index back to zero
       dom.currentActions = []; // empty the array
       setTimeout(dom.displayDefaultPrompt, 1000); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
+      dom.turnOnPlayerButtons(); // turns on the player's buttons to allow making another choice until someone wins
       return; // leave this loop
     } else {
       setTimeout(dom.displayActionsInitialization, 1000); // go back to the initialization function to display the next action
