@@ -1,9 +1,11 @@
+// KNOWN BUG: displayed health doesn't change correctly when resetting the game until an action is made
+
 $(function() { // start window onload
 
   // EVENT LISTENERS
   $('.position').on('click', gameInitialization.selectPosition);
   $('#user-hero-select-submit').on('click', gameInitialization.checkHeroSelect);
-
+  $('.restart-game').on('click', game.resetGame);
 }) // end window onload
 
 // OBJECTS
@@ -65,6 +67,7 @@ var player = {
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
+  'ultimateThreshold': 10,
   'currentMove': '',
   'damageDealt': 0,
   // player attack handler that occurs if the player clicks their hero's attack ability
@@ -115,10 +118,11 @@ var player = {
 var computer = {
   'position': '',
   'hero': '',
-  'health': 100,
+  'health': 1,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
+  'ultimateThreshold': 10,
   'currentMove': '',
   'damageDealt': 0,
   // method that randomizes the current move for the computer (either attack or defend)
@@ -351,6 +355,32 @@ var game = {
           setTimeout(dom.showLossScreen, 3000);
       }
     }
+  },
+  // method that resets everything to allow game restart
+  resetGame: function() {
+    // game variables reset
+    gameVariables.payload = 0;
+    gameVariables.heroPool = ['genji', 'pharah', 'bastion', 'mei', 'winston', 'd.va'];
+    // player variables reset
+    player.position = '';
+    player.hero = '';
+    player.health = 100;
+    player.accuracy = 0;
+    player.defense = 0;
+    player.ultimate = 0;
+    player.currentMove = '';
+    player.damageDealt = 0;
+    // computer variables reset
+    computer.position = '';
+    computer.hero = '';
+    computer.health = 1;
+    computer.accuracy = 0;
+    computer.defense = 0;
+    computer.ultimate = 0;
+    computer.currentMove = '';
+    computer.damageDealt = 0;
+    // calls reset screen method to reset dom
+    dom.resetScreen();
   }
 }
 
@@ -368,6 +398,10 @@ var dom = {
   hidePositionSelect: function() {
     $('.position-select').hide();
     this.showHeroSelect();
+  },
+  // method that shows position select
+  showPositionSelect: function() {
+    $('.position-select').show();
   },
   // method that shows the hero select screen
   showHeroSelect: function() {
@@ -480,6 +514,11 @@ var dom = {
         $('.computer-hero').addClass('defender');
         break;
     }
+  },
+  // method that hides the hero pics
+  hideHeroPics: function() {
+    $('.player-hero').addClass('hide').removeClass('player-hero').removeClass('attacker').removeClass('defender');
+    $('.computer-hero').addClass('hide').removeClass('computer-hero').removeClass('attacker').removeClass('defender');
   },
   // method that displays the hero's abilities for the player
   showPlayerHeroAbilites: function() {
@@ -625,17 +664,17 @@ var dom = {
   },
   // method that turns on the attacker's ability buttons and adds the class player-buttons to be accessed later
   turnOnAttackerButtons: function() {
-    $('#attacker-attack').on('click', player.attack).addClass('player-buttons');
-    $('#attacker-defense').on('click', player.defend).addClass('player-buttons');
-    $('#defender-attack').addClass('computer-buttons');
-    $('#defender-defense').addClass('computer-buttons');
+    $('#attacker-attack').on('click', player.attack).addClass('player-buttons').removeClass('computer-buttons');
+    $('#attacker-defense').on('click', player.defend).addClass('player-buttons').removeClass('computer-buttons');
+    $('#defender-attack').addClass('computer-buttons').removeClass('player-buttons');
+    $('#defender-defense').addClass('computer-buttons').removeClass('player-buttons');
   },
   // method that turns on the defender's ability buttons and adds the class player-buttons to be accessed later
   turnOnDefenderButtons: function() {
-    $('#defender-attack').on('click', player.attack).addClass('player-buttons');
-    $('#defender-defense').on('click', player.defend).addClass('player-buttons');
-    $('#attacker-attack').addClass('computer-buttons');
-    $('#attacker-defense').addClass('computer-buttons');
+    $('#defender-attack').on('click', player.attack).addClass('player-buttons').removeClass('computer-buttons');
+    $('#defender-defense').on('click', player.defend).addClass('player-buttons').removeClass('computer-buttons');
+    $('#attacker-attack').addClass('computer-buttons').removeClass('player-buttons');
+    $('#attacker-defense').addClass('computer-buttons').removeClass('player-buttons');
   },
   // method that turns off all ability buttons
   turnOffButtons: function() {
@@ -739,7 +778,24 @@ var dom = {
       break;
     }
   },
-  // displays the win screen
+  // hides the previous round's player hero pic
+  hidePlayerHeroEndPic: function() {
+    $('#genji-end').hide();
+    $('#pharah-end').hide();
+    $('#bastion-end').hide();
+    $('#mei-end').hide();
+    $('#winston-end').hide();
+    $('#dva-end').hide();
+  },
+  // displays end game screen
+  showEndScreen: function() {
+    $('.end-game').show();
+  },
+  // hides end game screen
+  hideEndScreen: function() {
+    $('.end-game').hide();
+  },
+ // displays the win screen
   showWinScreen: function() {
     dom.hideMainGameScreen();
     if (player.position === 'attack') {
@@ -750,7 +806,7 @@ var dom = {
     dom.changeh2('the world is now safe for another day');
     $('#win-game').show();
     dom.showPlayerHeroEndPic();
-    $('.end-game').show();
+    dom.showEndScreen();
   },
   // displays the loss screen
   showLossScreen: function() {
@@ -763,7 +819,7 @@ var dom = {
     dom.changeh2('the world is quickly falling apart!');
     $('#loss-draw').show();
     dom.showPlayerHeroEndPic();
-    $('.end-game').show();
+    dom.showEndScreen();
   },
   // displays the draw screen
   showDrawScreen: function() {
@@ -772,6 +828,15 @@ var dom = {
     dom.changeh2('but hey, at least the enemy died too?');
     $('#loss-draw').show();
     dom.showPlayerHeroEndPic();
-    $('.end-game').show();
+    dom.showEndScreen();
+  },
+  // restart button handler, hides end screen and brings back main screen
+  resetScreen: function() {
+    dom.changeHealth();
+    dom.translatePayload();
+    dom.hideHeroPics();
+    dom.hidePlayerHeroEndPic();
+    dom.hideEndScreen();
+    dom.showPositionSelect();
   }
 }
