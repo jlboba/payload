@@ -74,32 +74,33 @@ var player = {
     if (randomNum <= player.accuracy) { // if the random number is less than or equal to their hero's accuracy, they hit
       switch(randomNum) { // the amount of damage they deal is based on the random number that was generated
         case 0: // e.g. if the random number was 0
-          player.damageDealt = 1; // they deal 1 damage
+          player.damageDealt = 11; // they deal 1 damage
           break;
         case 0.1:
-          player.damageDealt = 2;
+          player.damageDealt = 12;
           break;
         case 0.2:
-          player.damageDealt = 3;
+          player.damageDealt = 13;
           break;
         case 0.3:
-          player.damageDealt = 4;
+          player.damageDealt = 14;
           break;
         case 0.4:
-          player.damageDealt = 5;
+          player.damageDealt = 15;
           break;
         case 0.5:
-          player.damageDealt = 6;
+          player.damageDealt = 16;
           break;
         case 0.6:
-          player.damageDealt = 7;
+          player.damageDealt = 17;
           break;
         case 0.7: // NOTE: only goes up to 0.7 because that is the highest possible accuracy a hero can obtain
-          player.damageDealt = 8;
+          player.damageDealt = 18;
           break;
       }
     } else if (randomNum > player.accuracy) { // else if the random number generated is greater than their hero's accuracy, they miss
-        console.log('player didn\'t hit');
+        player.damageDealt = 0;
+        dom.addActions('player attacked with ' + gameVariables[player.hero].attack + ' but missed!');
       }
     computer.randomMove(); // passes to computer's randomMove method
   },
@@ -130,7 +131,6 @@ var computer = {
       game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
     } else { // else if the randomNum is 6-10, computer defends
         this.currentMove = 'defend';
-        this.defend(); // passes to the computer's defend method
         game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
     }
   },
@@ -141,37 +141,34 @@ var computer = {
     if (randomNum <= this.accuracy) {
       switch(randomNum) {
         case 0:
-          this.damageDealt = 1;
+          this.damageDealt = 11;
           break;
         case 0.1:
-          this.damageDealt = 2;
+          this.damageDealt = 12;
           break;
         case 0.2:
-          this.damageDealt = 3;
+          this.damageDealt = 13;
           break;
         case 0.3:
-          this.damageDealt = 4;
+          this.damageDealt = 14;
           break;
         case 0.4:
-          this.damageDealt = 5;
+          this.damageDealt = 15;
           break;
         case 0.5:
-          this.damageDealt = 6;
+          this.damageDealt = 16;
           break;
         case 0.6:
-          this.damageDealt = 7;
+          this.damageDealt = 17;
           break;
         case 0.7:
-          this.damageDealt = 8;
+          this.damageDealt = 18;
           break;
       }
     } else {
-          console.log('computer didn\'t hit');
+          computer.damageDealt = 0;
+          dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + ' but missed!');
       }
-  },
-  // computer defend method
-  defend: function() {
-    console.log('computer defend method');
   }
 }
 
@@ -251,10 +248,14 @@ var game = {
   },
   // method that subtracts from both player's health depending on the damage dealt
   bothAttack: function() {
-    dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
-    dom.addActions('computer damaged by ' + player.damageDealt + ' hp!');
-    dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
-    dom.addActions('player damaged by ' + computer.damageDealt + ' hp!');
+    if (player.damageDealt > 0) {
+      dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
+      dom.addActions('computer damaged by ' + player.damageDealt + ' hp!');
+    }
+    if (computer.damageDealt > 0) {
+      dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
+      dom.addActions('player damaged by ' + computer.damageDealt + ' hp!');
+    }
     dom.displayActionsInitialization();
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
@@ -277,18 +278,22 @@ var game = {
     if (player.currentMove === 'attack') { // if the player is the one who chose an attack move
       var defendedDamage = computer.defense * player.damageDealt; // calculates how much the computer defended
       var remainingDamage = Math.round(player.damageDealt - defendedDamage); // calculates the remaining damage that wasn't defended
-      dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
-      dom.addActions('but computer defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[computer.hero].defend + '!');
-      dom.addActions('computer only damaged by ' + remainingDamage + 'hp!');
+      if (player.damageDealt > 0) {
+        dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
+        dom.addActions('but computer defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[computer.hero].defend + '!');
+        dom.addActions('computer only damaged by ' + remainingDamage + 'hp!');
+      }
       dom.displayActionsInitialization();
       computer.health -= remainingDamage; // subtracts the remaining damage from the computer's health
       dom.changeHealth(); // calls method to change the health displayed
     } else { // else if the player is the one who chose a defense move, does the reverse
         var defendedDamage = player.defense * computer.damageDealt;
         var remainingDamage = Math.round(computer.damageDealt - defendedDamage);
-        dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
-        dom.addActions('but player defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[player.hero].defend + '!');
-        dom.addActions('player only damaged by ' + remainingDamage + 'hp!');
+        if (computer.damageDealt > 0) {
+          dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
+          dom.addActions('but player defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[player.hero].defend + '!');
+          dom.addActions('player only damaged by ' + remainingDamage + 'hp!');
+        }
         dom.displayActionsInitialization();
         player.health -= Math.round(remainingDamage);
         dom.changeHealth();
@@ -648,8 +653,8 @@ var dom = {
     var $actions = $('.player-actions');
     $actions.hide(); // hides the already shown text for smoother transition
     $actions.html(dom.currentActions[dom.currentActionsIndex]); // changes the html of the prompt text to show the action of the round (from the array)
-    $actions.fadeIn(1800).fadeOut(1800); // fades the action in & out
-    setTimeout(dom.displayActionLoop, 1800); // calls the following function to allow delay between each action displaying
+    $actions.fadeIn(1500).fadeOut(1500); // fades the action in & out
+    setTimeout(dom.displayActionLoop, 1500); // calls the following function to allow delay between each action displaying
   },
   displayActionLoop: function() {
     var $actions = $('.player-actions');
@@ -657,10 +662,10 @@ var dom = {
     if (dom.currentActionsIndex  >= dom.currentActions.length) { // if the index number is greater than or equal to the length of the actions array
       dom.currentActionsIndex = 0; // set the index back to zero
       dom.currentActions = []; // empty the array
-      setTimeout(dom.displayDefaultPrompt, 1800); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
+      setTimeout(dom.displayDefaultPrompt, 1500); // calls displayDefaultPrompt function (outside of this loop because otherwise the animation is not smooth)
       return; // leave this loop
     } else {
-      setTimeout(dom.displayActionsInitialization, 1800); // go back to the initialization function to display the next action
+      setTimeout(dom.displayActionsInitialization, 1500); // go back to the initialization function to display the next action
     }
   },
   displayDefaultPrompt: function() {
