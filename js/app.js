@@ -120,23 +120,26 @@ var player = {
   },
   // player ultimate handler that occurs if the player unlocked their hero's ultimate ability and clicks on it
   useUltimate: function() {
-    if (player.hero === 'genji' || player.hero === 'pharah' || player.hero === 'bastion') {
-      computer.health -= gameVariables[player.hero].ultimateStat;
-      dom.changeHealth();
+    if (player.hero === 'genji' || player.hero === 'pharah' || player.hero === 'bastion') { // if the player's hero has one of the attacking ultimates
+      computer.health -= gameVariables[player.hero].ultimateStat; // subtract from the computer's health by the hero's ultimate stat
+      dom.changeHealth(); // changes health displayed
+      // adds actions to display on screen
       dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
       dom.addActions('computer couldn\'t defend or attack!');
       dom.addActions('computer damaged by ' + gameVariables[player.hero].ultimateStat + ' hp!');
       dom.displayActionsInitialization();
-    } else {
-        if (player.position === 'attack') {
-          gameVariables.payload += gameVariables[player.hero].ultimateStat;
-          dom.translatePayload();
+    } else { // else, the player's hero must have one of the payload ultimates
+        if (player.position === 'attack') { // if the player is on attack
+          gameVariables.payload += gameVariables[player.hero].ultimateStat; // move the payload by the hero's ultimate stat
+          dom.translatePayload(); // shows the payload moving
+          // adds actions to display on screen
           dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
           dom.addActions('computer couldn\'t defend or attack!');
           dom.addActions('payload moved by ' + gameVariables[player.hero].ultimateStat + ' meters!');
           dom.displayActionsInitialization();
-        } else {
-            gameVariables.payload -= gameVariables[player.hero].ultimateStat;dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
+        } else { // else if the player is on defense
+            gameVariables.payload -= gameVariables[player.hero].ultimateStat; // push the payload back by the hero's ultimate stat
+            dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
             dom.translatePayload();
             dom.addActions('computer couldn\'t defend or attack!');
             dom.addActions('payload pushed back by ' + gameVariables[player.hero].ultimateStat + ' meters!');
@@ -145,6 +148,7 @@ var player = {
     }
     // resets ult charge to 0
     player.ultimate = 0;
+    dom.changeUltimate();
     // deactivates the player's ult after using it once
     dom.deactivatePlayerUlt();
   }
@@ -158,20 +162,33 @@ var computer = {
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
-  'ultimateThreshold': 10,
+  'ultimateThreshold': 1,
   'currentMove': '',
   'damageDealt': 0,
   // method that randomizes the current move for the computer (either attack or defend)
   randomMove: function() {
     // generates a number between 1-10
     var randomNum = Math.floor(Math.random() * (11 - 1)) + 1;
-    if (randomNum <= 5) { // if the randomNum is 1-5, computer attacks
-      this.currentMove = 'attack';
-      this.attack(); // passes to the computer's attack method
-      game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
-    } else { // else if the randomNum is 6-10, computer defends
-        this.currentMove = 'defend';
+    if (this.ultimate < this.ultimateThreshold) {
+      if (randomNum <= 5) { // if the randomNum is 1-5, computer attacks
+        this.currentMove = 'attack';
+        this.attack(); // passes to the computer's attack method
         game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
+      } else { // else if the randomNum is 6-10, computer defends
+          this.currentMove = 'defend';
+          game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
+      }
+    } else {
+        if (randomNum <= 3) {
+          this.currentMove = 'attack';
+          this.attack(); // passes to the computer's attack method
+          game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
+        } else if (randomNum >=3 && randomNum <= 6) {
+            this.currentMove = 'defend';
+            game.checkCurrentMoves(); // then passes to the game method to compare both player's current moves
+        } else if (randomNum > 6) {
+            this.useUltimate();
+        }
     }
   },
   // computer attack method
@@ -209,6 +226,37 @@ var computer = {
           computer.damageDealt = 0;
           dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + ' but missed!');
       }
+  },
+  useUltimate: function() {
+    if (computer.hero === 'genji' || computer.hero === 'pharah' || computer.hero === 'bastion') { // if the computers hero has one of the attacking ultimates
+      player.health -= gameVariables[computer.hero].ultimateStat; // subtract from the players health by the hero's ultimate stat
+      dom.changeHealth(); // changes health displayed
+      // adds actions to display on screen
+      dom.addActions('computer used ' + gameVariables[computer.hero].ultimate + '!');
+      dom.addActions('player couldn\'t defend or attack!');
+      dom.addActions('player damaged by ' + gameVariables[computer.hero].ultimateStat + ' hp!');
+      dom.displayActionsInitialization();
+    } else { // else, the computer's hero must have one of the payload ultimates
+        if (player.position === 'attack') { // if the player is on attack
+          gameVariables.payload += gameVariables[computer.hero].ultimateStat; // move the payload by the hero's ultimate stat
+          dom.translatePayload(); // shows the payload moving
+          // adds actions to display on screen
+          dom.addActions('computer used ' + gameVariables[computer.hero].ultimate + '!');
+          dom.addActions('player couldn\'t defend or attack!');
+          dom.addActions('payload moved by ' + gameVariables[computer.hero].ultimateStat + ' meters!');
+          dom.displayActionsInitialization();
+        } else { // else if the computer is on defense
+            gameVariables.payload -= gameVariables[computer.hero].ultimateStat; // push the payload back by the hero's ultimate stat
+            dom.addActions('computer used ' + gameVariables[computer.hero].ultimate + '!');
+            dom.translatePayload();
+            dom.addActions('player couldn\'t defend or attack!');
+            dom.addActions('payload pushed back by ' + gameVariables[computer.hero].ultimateStat + ' meters!');
+            dom.displayActionsInitialization();
+        }
+    }
+    // resets ult charge to 0
+    computer.ultimate = 0;
+    dom.changeUltimate();
   }
 }
 
@@ -348,21 +396,13 @@ var game = {
       computer.ultimate += 0.5;
       this.checkUlt();
     }
+    dom.changeUltimate();
   },
   // method that checks if either player can use their ult yet
   checkUlt: function() {
-    if ((player.ultimate >= player.ultimateThreshold) && (computer.ultimate >= computer.ultimateThreshold)) {
+    if (player.ultimate >= player.ultimateThreshold) {
       dom.activatePlayerUlt();
-      game.activateComputerUlt();
-    } else if ((player.ultimate >= player.ultimateThreshold) && (computer.ultimate < computer.ultimateThreshold)) {
-       dom.activatePlayerUlt();
-    } else if ((player.ultimate < player.ultimateThreshold) && (computer.ultimate >= computer.ultimateThreshold)) {
-      game.activateComputerUlt();
     }
-  },
-  // method that activates the computer's ult
-  activateComputerUlt: function() {
-    console.log('inside activate computer ult');
   },
   // method to move the payload upon successful attacks from the attacker with no defense
   movePayload: function() {
@@ -778,6 +818,16 @@ var dom = {
         $('#attacker-health').html('<strong>HEALTH: </strong>' + computer.health);
     }
   },
+  // method that changes the ultimate displayed after successful attacks
+  changeUltimate: function() {
+    if (player.position === 'attack') {
+      $('#attacker-ultcharge').html('<strong>ULTIMATE: </strong>' + player.ultimate);
+      $('#defender-ultcharge').html('<strong>ULTIMATE: </strong>' + computer.ultimate);
+    } else {
+      $('#attacker-ultcharge').html('<strong>ULTIMATE: </strong>' + computer.ultimate);
+      $('#defender-ultcharge').html('<strong>ULTIMATE: </strong>' + player.ultimate);
+    }
+  },
   // empty array and index number to hold the current action strings
   'currentActions': [],
   'currentActionsIndex': 0,
@@ -913,6 +963,7 @@ var dom = {
   // restart button handler, hides end screen and brings back main screen
   resetScreen: function() {
     dom.changeHealth();
+    dom.changeUltimate();
     dom.translatePayload();
     dom.hideHeroPics();
     dom.hidePlayerHeroEndPic();
