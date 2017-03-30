@@ -118,7 +118,7 @@ var player = {
 var computer = {
   'position': '',
   'hero': '',
-  'health': 1,
+  'health': 100,
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
@@ -254,6 +254,9 @@ var game = {
   bothAttack: function() {
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
+    if ((player.damageDealt > 0) && (computer.damageDealt > 0)) {
+    this.chargeUlt(); // calls method to charge both player's ultimate, only if they actually hit
+    }
     dom.bothAttackActions(); // calls method to display the actions on screen
     dom.changeHealth(); // calls method to change the health displayed
     this.movePayload(); // calls method to move payload
@@ -274,6 +277,7 @@ var game = {
         dom.addActions('player attacked with ' + gameVariables[player.hero].attack + '!');
         dom.addActions('but computer defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[computer.hero].defend + '!');
         dom.addActions('computer only damaged by ' + remainingDamage + 'hp!');
+        this.chargeUlt();
       } else if (player.damageDealt === 0) {
           dom.addActions('computer defended with ' + gameVariables[computer.hero].defend + ' just in case!');
       }
@@ -287,6 +291,7 @@ var game = {
           dom.addActions('computer attacked with ' + gameVariables[computer.hero].attack + '!');
           dom.addActions('but player defended ' + Math.round(defendedDamage) + 'hp with ' + gameVariables[player.hero].defend + '!');
           dom.addActions('player only damaged by ' + remainingDamage + 'hp!');
+          this.chargeUlt();
         } else if (computer.damageDealt === 0) {
             dom.addActions('player defended with ' + gameVariables[player.hero].defend + ' just in case!');
         }
@@ -295,6 +300,16 @@ var game = {
     }
     this.movePayloadDefended(); // calls the move payload defended method (moves a little less than if the attack wasn't defended)
     this.healthCheck();
+  },
+  chargeUlt: function() {
+    if ((player.currentMove === 'attack') && (computer.currentMove === 'attack')) {
+      player.ultimate += 1;
+      computer.ultimate += 1;
+    } else if ((player.currentMove === 'attack') && (computer.currentMove === 'defend')) {
+      player.ultimate += 0.5;
+    } else if ((computer.currentMove === 'attack') && (player.currentMove === 'defend')) {
+      computer.ultimate += 0.5;
+    }
   },
   // method to move the payload upon successful attacks from the attacker with no defense
   movePayload: function() {
