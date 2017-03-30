@@ -18,6 +18,7 @@ var gameVariables = {
   'genji': {
     'accuracy': 0.7,
     'defense': 0.3,
+    'ultimateStat': 25,
     'attack': 'shurikens',
     'defend': 'deflect',
     'ultimate': 'dragon blade'
@@ -25,6 +26,7 @@ var gameVariables = {
   'pharah': {
     'accuracy': 0.7,
     'defense': 0.3,
+    'ultimateStat': 25,
     'attack': 'rocket launcher',
     'defend': 'jump jet',
     'ultimate': 'barrage'
@@ -32,6 +34,7 @@ var gameVariables = {
   'bastion': {
     'accuracy': 0.5,
     'defense': 0.5,
+    'ultimateStat': 25,
     'attack': 'gattling gun',
     'defend': 'self-repair',
     'ultimate': 'tank form'
@@ -39,6 +42,7 @@ var gameVariables = {
   'mei': {
     'accuracy': 0.5,
     'defense': 0.5,
+    'ultimateStat': 15,
     'attack': 'endothermic blaster',
     'defend': 'ice block',
     'ultimate': 'blizzard'
@@ -46,6 +50,7 @@ var gameVariables = {
   'winston': {
     'accuracy': 0.3,
     'defense': 0.7,
+    'ultimateStat': 15,
     'attack': 'tesla cannon',
     'defend': 'barrier protector',
     'ultimate': 'primal rage'
@@ -53,6 +58,7 @@ var gameVariables = {
   'd.va': {
     'accuracy': 0.3,
     'defense': 0.7,
+    'ultimateStat': 15,
     'attack': 'fusion cannons',
     'defend': 'defense matrix',
     'ultimate': 'self-destruct'
@@ -67,7 +73,7 @@ var player = {
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
-  'ultimateThreshold': 10,
+  'ultimateThreshold': 1,
   'currentMove': '',
   'damageDealt': 0,
   // player attack handler that occurs if the player clicks their hero's attack ability
@@ -111,6 +117,36 @@ var player = {
   defend: function() {
     player.currentMove = 'defend'; // changes current move to attack
     computer.randomMove(); // passes to computer's randomMove method
+  },
+  // player ultimate handler that occurs if the player unlocked their hero's ultimate ability and clicks on it
+  useUltimate: function() {
+    if (player.hero === 'genji' || player.hero === 'pharah' || player.hero === 'bastion') {
+      computer.health -= gameVariables[player.hero].ultimateStat;
+      dom.changeHealth();
+      dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
+      dom.addActions('computer couldn\'t defend or attack!');
+      dom.addActions('computer damaged by ' + gameVariables[player.hero].ultimateStat + ' hp!');
+      dom.displayActionsInitialization();
+    } else {
+        if (player.position === 'attack') {
+          gameVariables.payload += gameVariables[player.hero].ultimateStat;
+          dom.translatePayload();
+          dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
+          dom.addActions('computer couldn\'t defend or attack!');
+          dom.addActions('payload moved by ' + gameVariables[player.hero].ultimateStat + ' meters!');
+          dom.displayActionsInitialization();
+        } else {
+            gameVariables.payload -= gameVariables[player.hero].ultimateStat;dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
+            dom.translatePayload();
+            dom.addActions('computer couldn\'t defend or attack!');
+            dom.addActions('payload pushed back by ' + gameVariables[player.hero].ultimateStat + ' meters!');
+            dom.displayActionsInitialization();
+        }
+    }
+    // resets ult charge to 0
+    player.ultimate = 0;
+    // deactivates the player's ult after using it once
+    dom.deactivatePlayerUlt();
   }
 }
 
@@ -254,9 +290,7 @@ var game = {
   bothAttack: function() {
     player.health -= computer.damageDealt;
     computer.health -= player.damageDealt;
-    if ((player.damageDealt > 0) && (computer.damageDealt > 0)) {
-    this.chargeUlt(); // calls method to charge both player's ultimate, only if they actually hit
-    }
+    this.chargeUlt(); // calls method to charge both player's ultimate
     dom.bothAttackActions(); // calls method to display the actions on screen
     dom.changeHealth(); // calls method to change the health displayed
     this.movePayload(); // calls method to move payload
@@ -301,15 +335,34 @@ var game = {
     this.movePayloadDefended(); // calls the move payload defended method (moves a little less than if the attack wasn't defended)
     this.healthCheck();
   },
+  // method that charges each player's ultimate anytime they successfully attack
   chargeUlt: function() {
     if ((player.currentMove === 'attack') && (computer.currentMove === 'attack')) {
       player.ultimate += 1;
       computer.ultimate += 1;
-    } else if ((player.currentMove === 'attack') && (computer.currentMove === 'defend')) {
+      this.checkUlt();
+    } else if ((player.currentMove === 'attack') && (computer.currentMove === 'defend')) { // note that it charges slower if the other player was able to defend part of the attack
       player.ultimate += 0.5;
+      this.checkUlt();
     } else if ((computer.currentMove === 'attack') && (player.currentMove === 'defend')) {
       computer.ultimate += 0.5;
+      this.checkUlt();
     }
+  },
+  // method that checks if either player can use their ult yet
+  checkUlt: function() {
+    if ((player.ultimate >= player.ultimateThreshold) && (computer.ultimate >= computer.ultimateThreshold)) {
+      dom.activatePlayerUlt();
+      game.activateComputerUlt();
+    } else if ((player.ultimate >= player.ultimateThreshold) && (computer.ultimate < computer.ultimateThreshold)) {
+       dom.activatePlayerUlt();
+    } else if ((player.ultimate < player.ultimateThreshold) && (computer.ultimate >= computer.ultimateThreshold)) {
+      game.activateComputerUlt();
+    }
+  },
+  // method that activates the computer's ult
+  activateComputerUlt: function() {
+    console.log('inside activate computer ult');
   },
   // method to move the payload upon successful attacks from the attacker with no defense
   movePayload: function() {
@@ -681,15 +734,19 @@ var dom = {
   turnOnAttackerButtons: function() {
     $('#attacker-attack').on('click', player.attack).addClass('player-buttons').removeClass('computer-buttons');
     $('#attacker-defense').on('click', player.defend).addClass('player-buttons').removeClass('computer-buttons');
+    $('#attacker-ultimate').addClass('player-buttons').removeClass('computer-buttons');
     $('#defender-attack').addClass('computer-buttons').removeClass('player-buttons');
     $('#defender-defense').addClass('computer-buttons').removeClass('player-buttons');
+    $('#defender-ultimate').addClass('computer-buttons').removeClass('player-buttons');
   },
   // method that turns on the defender's ability buttons and adds the class player-buttons to be accessed later
   turnOnDefenderButtons: function() {
     $('#defender-attack').on('click', player.attack).addClass('player-buttons').removeClass('computer-buttons');
     $('#defender-defense').on('click', player.defend).addClass('player-buttons').removeClass('computer-buttons');
+    $('#defender-ultimate').addClass('player-buttons').removeClass('computer-buttons');
     $('#attacker-attack').addClass('computer-buttons').removeClass('player-buttons');
     $('#attacker-defense').addClass('computer-buttons').removeClass('player-buttons');
+    $('#attacker-ultimate').addClass('computer-buttons').removeClass('player-buttons');
   },
   // method that turns off all ability buttons
   turnOffButtons: function() {
@@ -702,6 +759,14 @@ var dom = {
   turnOnPlayerButtons: function() {
     $('.player-buttons').eq(0).on('click', player.attack);
     $('.player-buttons').eq(1).on('click', player.defend);
+  },
+  // method that 'activates' the user's ultimate ability by removing the opacity
+  activatePlayerUlt: function() {
+    $('.player-buttons').eq(2).removeClass('ult').on('click', player.useUltimate);
+  },
+  // method that 'deactivates' the user's ultimate ability after using it once
+  deactivatePlayerUlt: function() {
+    $('.player-buttons').eq(2).addClass('ult').off();
   },
   // method that changes the health displayed whenever either gets hit
   changeHealth: function() {
