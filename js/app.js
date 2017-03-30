@@ -6,7 +6,10 @@ $(function() { // start window onload
   $('.position').on('click', gameInitialization.selectPosition);
   $('#user-hero-select-submit').on('click', gameInitialization.checkHeroSelect);
   $('.restart-game').on('click', game.resetGame);
-}) // end window onload
+
+  // JQUERY UI
+
+}); // end window onload
 
 // OBJECTS
 

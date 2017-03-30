@@ -1,4 +1,4 @@
-/* ------ GENERAL ------ */
+/* ------ GENERAL STYLING ( 0 - 700px width ) ------ */
 body, html {
   margin: 0;
   padding: 0;
@@ -22,8 +22,6 @@ body, html {
 ::-webkit-scrollbar-thumb {
   background-color: rgb(60, 119, 125);
 }
-/* ------ RESPONSIVE STYLING ( 0 - 700px width ) ------ */
-/* --- GENERAL --- */
 header {
   width: 100%;
   min-height: 130px;
@@ -55,7 +53,23 @@ h2 {
   padding: 0;
   text-transform: uppercase;
 }
-/* --- OPENING SCREEN --- */
+/* ------ RESPONSIVE GENERAL STYLING ( min 700px width ) ------ */
+@media (min-width: 700px) {
+  body {
+    background: url('../imgs/gibraltarhq.jpg');
+    background-position: center;
+  }
+  header {
+    background: rgba(255, 255, 255, 0.7)
+  }
+  h1 {
+    font-size: 6vw;
+  }
+  h2 {
+    font-size: 2.5vw;
+  }
+}
+/* --- OPENING SCREEN ( 0 - 700px width ) --- */
 .position-select {
   display: show;
 }
@@ -112,7 +126,21 @@ h2 {
   -moz-transition: .3s linear;
   -webkit-transition: .3s linear;
 }
-/* --- HERO SELECT SCREEN --- */
+/* ------ RESPONSIVE OPENING SCREEN ( min 700px width ) ------ */
+@media (min-width: 700px) {
+  .position-select .blurb {
+    width: 70%;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .position-buttons {
+    width: 70%;
+  }
+  .position-select button {
+    width: 35%;
+    font-size: 2vw;
+  }
+}
+/* --- HERO SELECT SCREEN ( 0 - 700px width ) --- */
 .hero-select {
   display: none;
   height: calc(100% - 130px);
