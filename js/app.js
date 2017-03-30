@@ -1,13 +1,22 @@
-// KNOWN BUG: displayed health doesn't change correctly when resetting the game until an action is made
+// KNOWN BUGS:
+  // displayed health doesn't change correctly when resetting the game until an action is made
+  // select your hero page doesn't act as intended after window resizes
 
 $(function() { // start window onload
 
   // EVENT LISTENERS
+  // selecting position
   $('.position').on('click', gameInitialization.selectPosition);
   $('#user-hero-select-submit').on('click', gameInitialization.checkHeroSelect);
+  $('#user-hero-select-submit').on('click', function(){
+    $("#hero-select-form").trigger('reset');
+  });
+  // restarting game
   $('.restart-game').on('click', game.resetGame);
 
-  // JQUERY UI
+  // RESPONSIVE USER INTERFACE
+  // for hero select screen
+  $(window).resize(dom.resize).trigger('resize');
 
 }); // end window onload
 
@@ -972,5 +981,56 @@ var dom = {
     dom.hidePlayerHeroEndPic();
     dom.hideEndScreen();
     dom.showPositionSelect();
+  },
+  // method for when window resizes
+  resize: function() {
+    if ($(window).width() < 800) { // when window is less than 800px wide
+      $('.hero-row').addClass('mobile'); // makes sure the hero-row has the class mobile
+      $('.hero-image').removeClass('genji-desktop');
+      $('.hero-image').removeClass('pharah-desktop');
+      $('.hero-image').removeClass('bastion-desktop');
+      $('.hero-image').removeClass('mei-desktop');
+      $('.hero-image').removeClass('winston-desktop');
+      $('.hero-image').removeClass('dva-desktop');
+    } else if ($(window).width() > 800) {
+    $('.hero-row').removeClass('mobile'); // otherwise, removes mobile class
+    $('#genji-img').addClass('genji-desktop');
+    $('#pharah-img').addClass('pharah-desktop');
+    $('#bastion-img').addClass('bastion-desktop');
+    $('#mei-img').addClass('mei-desktop');
+    $('#winston-img').addClass('winston-desktop');
+    $('#dva-img').addClass('dva-desktop');
+    // hero select screen listeners
+    // genji
+    $('.genji-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#genji-info').show();
+    });
+    // pharah
+    $('.pharah-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#pharah-info').show();
+    });
+    // bastion
+    $('.bastion-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#bastion-info').show();
+    });
+    // mei
+    $('.mei-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#mei-info').show();
+    });
+    // winston
+    $('.winston-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#winston-info').show();
+    });
+    // dva
+    $('.dva-desktop').on('click', function(){
+      $('.hero-info').hide();
+      $('#dva-info').show();
+    });
+    }
   }
 }

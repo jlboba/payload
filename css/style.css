@@ -140,7 +140,7 @@ h2 {
     font-size: 2vw;
   }
 }
-/* --- HERO SELECT SCREEN ( 0 - 700px width ) --- */
+/* --- HERO SELECT SCREEN ( 0 - 800px width ) --- */
 .hero-select {
   display: none;
   height: calc(100% - 130px);
@@ -155,7 +155,7 @@ h2 {
   margin: 20px;
   padding: 2px;
 }
-.hero-row {
+.mobile {
   width: 90%;
   margin: 20px auto;
   display: flex;
@@ -175,6 +175,18 @@ h2 {
   width: 100%;
   position: relative;
   left: 10%;
+}
+#pharah-img img {
+  left: -1%;
+}
+#bastion-img img {
+  left: -5%;
+}
+#winston-img img {
+  left: -1%;
+}
+#dva-img img {
+  left: 3%;
 }
 .hero-info {
   width: 47%;
@@ -260,7 +272,125 @@ h2 {
   -moz-transition: .3s linear;
   -webkit-transition: .3s linear;
 }
-/* --- MAIN GAME SCREEN --- */
+/* --- RESPONSIVE HERO SELECT SCREEN ( min-width 800px ) --- */
+@media (min-width:800px) {
+  .hero-select h3 {
+    color: rgb(255,255,255);
+    text-shadow: 1px 1px rgba(254, 151, 77, 0.8);
+  }
+  .attacker-desktop {
+    position: absolute;
+    bottom: 32%;
+    left: 8%;
+  }
+  .defender-desktop {
+    position: absolute;
+    bottom: 32%;
+    left: 34%;
+  }
+  .tank-desktop {
+    position: absolute;
+    bottom: 32%;
+    left: 60%;
+  }
+  .hero-image {
+    width: 10%;
+    height: 100px;
+    display: inline-block;
+  }
+  .hero-image img {
+    width: 200%;
+    left: -23%;
+  }
+  #pharah-img img {
+    left: -43%;
+  }
+  #bastion-img img {
+    left: -55%;
+  }
+  #winston-img img {
+    left: -51%;
+  }
+  #dva-img img {
+    left: -40%;
+  }
+  .genji-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 10%;
+  }
+  .pharah-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 23%;
+  }
+  .bastion-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 36%;
+  }
+  .mei-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 49%;
+  }
+  .winston-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 62%;
+  }
+  .dva-desktop {
+    position: absolute;
+    bottom: 20%;
+    left: 75%;
+  }
+  .hero-info {
+    width: 80%;
+    height: 220px;
+    font-size: 2px;
+    margin: 2% auto;
+  }
+  .hero-select ul {
+    font-size: 1.5vw;
+  }
+  #genji-info {
+    display: show;
+  }
+  #pharah-info {
+    display: none;
+  }
+  #bastion-info {
+    display: none;
+  }
+  #mei-info {
+    display: none;
+  }
+  #winston-info {
+    display: none;
+  }
+  #dva-info {
+    display: none;
+  }
+  .hero-submit {
+    width: 30%;
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+  }
+  .hero-select form {
+    width: 70%;
+  }
+  .hero-select input {
+    width: 100%;
+    height: 20px;
+    font-size: 1.5vw;
+  }
+  .hero-select button {
+    width: 25%;
+    font-size: 1.5vw;
+  }
+}
+/* --- MAIN GAME SCREEN ( 0 - 700px width ) --- */
 .main-game {
   display: none;
   height: calc(100% - 130px);
