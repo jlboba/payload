@@ -60,7 +60,7 @@ h2 {
     background-position: center;
   }
   header {
-    background: rgba(255, 255, 255, 0.7)
+    background: rgba(255, 255, 255, 0.7);
   }
   h1 {
     font-size: 6vw;
@@ -796,6 +796,9 @@ h2 {
   display: none;
   text-align: center;
 }
+.end-game img {
+  width: 50%;
+}
 .end-game h3 {
   text-align: center;
   font-size: 4vw;
@@ -852,44 +855,88 @@ h2 {
 }
 /* heroes */
 #genji-end {
-  width: 50%;
   position: absolute;
   margin-top: 13%;
   margin-left: -35%;
   display: none;
 }
 #pharah-end {
-  width: 50%;
   position: absolute;
   margin-top: 13%;
   margin-left: -35%;
   display: none;
 }
 #bastion-end {
-  width: 50%;
   position: absolute;
   margin-top: 13%;
   margin-left: -40%;
   display: none;
 }
 #mei-end {
-  width: 50%;
   position: absolute;
   margin-top: 8%;
   margin-left: -40%;
   display: none;
 }
 #winston-end {
-  width: 50%;
   position: absolute;
   margin-top: 13%;
   margin-left: -40%;
   display: none;
 }
 #dva-end {
-  width: 50%;
   position: absolute;
   margin-top: 13%;
   margin-left: -35%;
   display: none;
+}
+
+@media (min-width: 750px) {
+  .end-game {
+    display: show;
+    text-align: center;
+  }
+  .end-game img {
+    width: 40%;
+  }
+  .end-game h3 {
+    font-size: 4vw;
+    font-weight: 700;
+    margin-top: 50%;
+    margin-left: 18%;
+    position: absolute;
+  }
+  .end-game button {
+    font-size: 2vw;
+    font-weight: 700;
+    margin-top: 56%;
+    margin-left: -9%;
+    position: absolute;
+  }
+  /* win screen */
+  #win-game {
+    width: 35%;
+  }
+  /* loss & draw screen */
+  #loss-draw {
+    width: 35%;
+  }
+  /* heroes */
+  #pharah-end {
+    margin-left: -30%;
+  }
+  #bastion-end {
+    margin-left: -30%;
+  }
+  #mei-end {
+    margin-left: -35%;
+  }
+  #winston-end {
+    margin-top: 10%;
+    margin-left: -30%;
+  }
+  #dva-end {
+    margin-top: 10%;
+    margin-left: -30%;
+  }
 }
