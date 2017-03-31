@@ -1,6 +1,8 @@
 // KNOWN BUGS:
+
   // displayed health doesn't change correctly when resetting the game until an action is made
-  // select your hero page doesn't act as intended after window resizes
+
+  // select your hero mobile page doesn't act as intended after window resizes from desktop version
 
 $(function() { // start window onload
 
@@ -249,7 +251,7 @@ var computer = {
       dom.addActions('player damaged by ' + gameVariables[computer.hero].ultimateStat + ' hp!');
       dom.displayActionsInitialization();
     } else { // else, the computer's hero must have one of the payload ultimates
-        if (player.position === 'attack') { // if the player is on attack
+        if (computer.position === 'attack') { // if the player is on attack
           gameVariables.payload += gameVariables[computer.hero].ultimateStat; // move the payload by the hero's ultimate stat
           dom.translatePayload(); // shows the payload moving
           // adds actions to display on screen
@@ -992,6 +994,12 @@ var dom = {
       $('.hero-image').removeClass('mei-desktop');
       $('.hero-image').removeClass('winston-desktop');
       $('.hero-image').removeClass('dva-desktop');
+      $('.genji-desktop').off();
+      $('.pharah-desktop').off();
+      $('.bastion-desktop').off();
+      $('.mei-desktop').off();
+      $('.winston-desktop').off();
+      $('.dva-desktop').off();
     } else if ($(window).width() > 800) {
     $('.hero-row').removeClass('mobile'); // otherwise, removes mobile class
     $('#genji-img').addClass('genji-desktop');
