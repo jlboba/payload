@@ -87,7 +87,7 @@ var player = {
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
-  'ultimateThreshold': 1,
+  'ultimateThreshold': 10,
   'currentMove': '',
   'damageDealt': 0,
   // player attack handler that occurs if the player clicks their hero's attack ability
@@ -180,7 +180,7 @@ var computer = {
   'accuracy': 0,
   'defense': 0,
   'ultimate': 0,
-  'ultimateThreshold': 1,
+  'ultimateThreshold': 10,
   'currentMove': '',
   'damageDealt': 0,
   // method that randomizes the current move for the computer (either attack or defend)
