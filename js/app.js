@@ -137,6 +137,10 @@ var player = {
     if (player.hero === 'genji' || player.hero === 'pharah' || player.hero === 'bastion') { // if the player's hero has one of the attacking ultimates
       computer.health -= gameVariables[player.hero].ultimateStat; // subtract from the computer's health by the hero's ultimate stat
       dom.changeHealth(); // changes health displayed
+      if (player.position === 'attack') {
+        gameVariables.payload += 6;
+        dom.translatePayload();
+      }; // moves payload the normal attack amount if player is on attack
       // adds actions to display on screen
       dom.addActions('player used ' + gameVariables[player.hero].ultimate + '!');
       dom.addActions('computer couldn\'t defend or attack!');
@@ -245,6 +249,10 @@ var computer = {
     if (computer.hero === 'genji' || computer.hero === 'pharah' || computer.hero === 'bastion') { // if the computers hero has one of the attacking ultimates
       player.health -= gameVariables[computer.hero].ultimateStat; // subtract from the players health by the hero's ultimate stat
       dom.changeHealth(); // changes health displayed
+      if (computer.position === 'attack') {
+        gameVariables.payload += 6; // moves payload the normal attack amount if computer is on attack
+        dom.translatePayload();
+      };
       // adds actions to display on screen
       dom.addActions('computer used ' + gameVariables[computer.hero].ultimate + '!');
       dom.addActions('player couldn\'t defend or attack!');
