@@ -572,7 +572,7 @@ h2 {
   }
 }
 /* ------ RESPONSIVE MAIN GAME SCREEN ( min 730px width ) ------ */
-@media (min-width: 650px){
+@media (min-width: 730px){
   /* actions display */
   .player-actions {
     width: 100%;
@@ -585,6 +585,7 @@ h2 {
     letter-spacing: 1px;
     margin-top: 7%;
     position: absolute;
+    z-index: 1;
   }
   /* payload meter */
   .payload-meter {
@@ -636,6 +637,158 @@ h2 {
   }
   .attacker-options, .defender-options {
     margin-top: -6%;
+  }
+}
+/* ------ RESPONSIVE MAIN GAME SCREEN ( min 800px width ) ------ */
+@media (min-width: 800px){
+  .main-game h3 {
+    font-size: 2vw;
+  }
+  .pos {
+    font-size: 2vw;
+  }
+  /* actions display */
+  .player-actions {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+    font-size: 3.2vw;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-top: 12%;
+    position: absolute;
+    z-index: 1;
+  }
+  /* payload meter */
+  .payload-meter {
+    width: 90%;
+    height: 5px;
+    position: absolute;
+    margin: 4% 5%;
+    background: rgba(254, 151, 77, 0.9);
+  }
+  #payload {
+    width: 15%;
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 1%;
+  }
+  #payload-threshold {
+    width: 13%;
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 83%;
+  }
+  /* heroes */
+  .attacker {
+    top: 26%;
+  }
+  .defender {
+    top: 27%;
+    left: 61%;
+  }
+  #genji, #dva {
+    width: 30%;
+    margin-left: 4%;
+  }
+  #pharah {
+    width: 37%;
+   }
+  #bastion {
+    width: 36%;
+    margin-left: 6%;
+  }
+  #mei {
+    width: 34%;
+    margin-top: 1%;
+  }
+  #winston {
+    width: 33%;
+  }
+  .players {
+    width: 28%;
+    margin-top: -8%;
+    font-size: 1.4vw;
+  }
+  .attacker-options, .defender-options {
+    margin-top: -7%;
+    width: 28%;
+  }
+  .defender-options{
+    margin-left: 10%;
+  }
+  .attacker-options button, .defender-options button {
+    font-size: 1.4vw;
+  }
+  #defend {
+    margin-left: 26.5%;
+  }
+}
+/* ------ RESPONSIVE MAIN GAME SCREEN ( min 950px width ) ------ */
+@media (min-width: 950px){
+  /* actions display */
+  .player-actions {
+    width: 70%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+    font-size: 2vw;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-top: 10%;
+    margin-left: 15%;
+    position: absolute;
+    z-index: 1;
+  }
+  /* heroes */
+  .attacker {
+    top: 26%;
+  }
+  .defender {
+    top: 27%;
+    left: 67%;
+  }
+  #genji, #dva {
+    width: 23%;
+    margin-top: 2%;
+    margin-left: 4%;
+  }
+  #pharah {
+    width: 27%;
+   }
+  #bastion {
+    width: 26%;
+    margin-left: 6%;
+  }
+  #mei {
+    width: 24%;
+    margin-top: 1%;
+  }
+  #winston {
+    width: 25%;
+    margin-top: 3%;
+    margin-left: 2%;
+  }
+  .players {
+    width: 28%;
+    margin-top: -8%;
+    font-size: 1.4vw;
+  }
+  .attacker-options, .defender-options {
+    margin-top: -7%;
+    width: 28%;
+  }
+  .defender-options{
+    margin-left: 10%;
+  }
+  .attacker-options button, .defender-options button {
+    font-size: 1.4vw;
+  }
+  #defend {
+    margin-left: 26.5%;
   }
 }
 /* END GAME SCREEN */
