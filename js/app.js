@@ -503,7 +503,7 @@ var game = {
     // computer variables reset
     computer.position = '';
     computer.hero = '';
-    computer.health = 1;
+    computer.health = 100;
     computer.accuracy = 0;
     computer.defense = 0;
     computer.ultimate = 0;
