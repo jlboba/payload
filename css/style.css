@@ -446,10 +446,7 @@ h2 {
 .hide {
   display: none;
 }
-#genji {
-  width: 45%;
-}
-#pharah {
+#genji, #pharah, #dva {
   width: 45%;
 }
 #bastion {
@@ -461,9 +458,6 @@ h2 {
 }
 #winston {
   width: 46%;
-}
-#dva {
-  width: 45%;
 }
 /* hero info */
 .players {
@@ -548,6 +542,101 @@ h2 {
 }
 .ult {
   opacity: 0.65;
+}
+/* ------ RESPONSIVE MAIN GAME SCREEN ( min 650px width ) ------ */
+@media (min-width: 650px){
+  /* heroes */
+  #genji, #dva {
+    width: 36%;
+    margin-left: 4%;
+  }
+  #pharah {
+    width: 37%;
+   }
+  #bastion {
+    width: 36%;
+    margin-left: 6%;
+  }
+  #mei {
+    width: 34%;
+    margin-top: 1%;
+  }
+  #winston {
+    width: 37%;
+  }
+  .players {
+    margin-top: -5%;
+  }
+  .attacker-options, .defender-options {
+    margin-top: -3%;
+  }
+}
+/* ------ RESPONSIVE MAIN GAME SCREEN ( min 730px width ) ------ */
+@media (min-width: 650px){
+  /* actions display */
+  .player-actions {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+    font-size: 3.2vw;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 1px;
+    margin-top: 7%;
+    position: absolute;
+  }
+  /* payload meter */
+  .payload-meter {
+    width: 90%;
+    height: 5px;
+    position: absolute;
+    margin: 4% 5%;
+    background: rgba(254, 151, 77, 0.9);
+  }
+  #payload {
+    width: 15%;
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 1%;
+  }
+  #payload-threshold {
+    width: 13%;
+    position: absolute;
+    margin-top: 1%;
+    margin-left: 83%;
+  }
+  /* heroes */
+  .attacker {
+    top: 26%;
+  }
+  .defender {
+    top: 27%;
+  }
+  #genji, #dva {
+    width: 36%;
+    margin-left: 4%;
+  }
+  #pharah {
+    width: 37%;
+   }
+  #bastion {
+    width: 36%;
+    margin-left: 6%;
+  }
+  #mei {
+    width: 34%;
+    margin-top: 1%;
+  }
+  #winston {
+    width: 37%;
+  }
+  .players {
+    margin-top: -8%;
+  }
+  .attacker-options, .defender-options {
+    margin-top: -6%;
+  }
 }
 /* END GAME SCREEN */
 .end-game {
